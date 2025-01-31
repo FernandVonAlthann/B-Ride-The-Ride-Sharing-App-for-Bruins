@@ -50,7 +50,7 @@ Git Installation
 
 Clone the repository
 
-git clone https://github.com/AlthannToursChaumiereRobledi/B-Ride-The-Ride-Sharing-App-for-Bruins
+git clone https://github.com/FernandVonAlthann/B-Ride-The-Ride-Sharing-App-for-Bruins
 
 cd ./B-Ride-The-Ride-Sharing-App-for-Bruins
 
