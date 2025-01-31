@@ -21,7 +21,7 @@ This project aims to develop a ride-sharing application with core functionalitie
 
 # Git Repository Link
 
-https://github.com/AlthannToursChaumiereRobledi/B-Ride-The-Ride-Sharing-App-for-Bruins
+https://github.com/FernandVonAlthann/B-Ride-The-Ride-Sharing-App-for-Bruins
 
 # Key Features
 
