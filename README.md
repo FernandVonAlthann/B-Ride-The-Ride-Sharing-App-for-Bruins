@@ -10,7 +10,7 @@ Computer Science 35L Winter 25
 
 B-Ride-The-Ride-Sharing-App-for-Bruins
 
-# Group members: 
+# Group members
 
 Karol Barroso, Fernando-Anscar Althann, Terry Lee, Ani Torosyan,
 Neil Pal
@@ -26,12 +26,15 @@ https://github.com/AlthannToursChaumiereRobledi/B-Ride-The-Ride-Sharing-App-for-
 # Key Features
 
 User authentication enables secure access to the system by allowing users to create accounts with unique credentials.
+
 User profiles.
+
 GPS-based assistance for users.
 
 Technology Stack:
 
 Node.js / React / Next.js / Tailwind CSS / PostgreSQL
+
 Next.js App Router / Fetch HTTP Request / JWT Authentication
 Git
 
@@ -40,14 +43,19 @@ Git
 Prerequisites
 
 Node.js(version v20.11.0 or later)
+
 npm (version 10.2.4 or later)
+
 Git Installation
 
 Clone the repository
 
 git clone https://github.com/AlthannToursChaumiereRobledi/B-Ride-The-Ride-Sharing-App-for-Bruins
+
 cd ./B-Ride-The-Ride-Sharing-App-for-Bruins
+
 Install dependencies
+
 npm install
 
 Initialize the Database
@@ -57,6 +65,7 @@ Before you begin, you need to make sure your PostgreSQL server is up and running
 Run the application
 
 npm run dev
+
 Open http://localhost:3000 with your browser to see the result.
 
 # Components
