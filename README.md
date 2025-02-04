@@ -63,25 +63,12 @@ cd B-Ride-The-Ride-Sharing-App-for-Bruins
 npm install
 ```
 
-3. Set up the enviroment variables
-Create a `.env.local` file in the root of your project.
-```
-cp .env.example .env.local
-```
-
-
-4. Initialize the Database
-
-Before you begin, you need to make sure your PostgreSQL server is up and running. This can typically be checked through your system's service management tool.
-
-`init_db.sql`: This script contains SQL statements that define your database schema. This includes CREATE TABLE statements for each table. Execute `init_db.sql` script to configure the database schema as needed.
-
-5. Run the application
+3. Run the application
 ```
 npm run dev
 ```
 
-6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 
 # Components
