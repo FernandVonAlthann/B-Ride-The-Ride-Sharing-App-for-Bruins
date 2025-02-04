@@ -53,10 +53,12 @@ Git Installation
 1. Clone the repository
 ```
 git clone https://github.com/FernandVonAlthann/B-Ride-The-Ride-Sharing-App-for-Bruins.git
-cd ./B-Ride-The-Ride-Sharing-App-for-Bruins
 ```
 
 2. Install dependencies (cd if not already in directory)
+```
+cd B-Ride-The-Ride-Sharing-App-for-Bruins
+```
 ```
 npm install
 ```
