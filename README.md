@@ -55,20 +55,21 @@ Git Installation
 git clone https://github.com/FernandVonAlthann/B-Ride-The-Ride-Sharing-App-for-Bruins.git
 ```
 
-2. Install dependencies (cd if not already in directory)
+2. Enter directory
 ```
 cd B-Ride-The-Ride-Sharing-App-for-Bruins
 ```
+3. Install dependencies
 ```
 npm install
 ```
 
-3. Run the application
+4. Run the application
 ```
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 
 # Components
