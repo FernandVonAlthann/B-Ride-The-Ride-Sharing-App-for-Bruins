@@ -78,5 +78,3 @@ npm run dev
 # Frontend
 
 The frontend of the application is built using React.
-
-# Components
