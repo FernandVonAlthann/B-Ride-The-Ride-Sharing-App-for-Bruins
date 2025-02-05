@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation"; // Import router
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export default function FindRide() {
   const [rides, setRides] = useState<{ from: string; to: string; time: string }[]>([]);
   const [search, setSearch] = useState("");
-
+  const router = useRouter(); // Initialize router
+  
   useEffect(() => {
     const storedRides = JSON.parse(localStorage.getItem("rides") || "[]");
     setRides(storedRides);
@@ -29,6 +31,9 @@ export default function FindRide() {
           </div>
         ))}
       </div>
+      <Button onClick={() => router.push("/dashboard")} className="bg-gray-500 hover:bg-gray-600 text-white">
+          Go Back
+      </Button>
     </div>
   );
 }
