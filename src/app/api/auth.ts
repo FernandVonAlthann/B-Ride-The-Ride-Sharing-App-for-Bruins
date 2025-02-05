@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const SECRET = "your_secret_key";  // Use env variable
+const SECRET = "our_secret_key";  // THIS IS OUR KEY
 
 export async function POST(req: NextRequest) {
     const { email, password } = await req.json();
