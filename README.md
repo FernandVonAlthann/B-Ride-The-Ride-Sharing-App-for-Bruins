@@ -83,7 +83,7 @@ npm run dev
 
 /src/app/api/locations.ts
 
-/public/server/index.js
+/backend/server/index.js
 
 # Frontend
 
