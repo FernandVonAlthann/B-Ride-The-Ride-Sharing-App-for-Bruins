@@ -15,6 +15,7 @@ export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState<{ name?: string }>({});
   const [rides, setRides] = useState<Ride[]>([]);
+  const [location, setLocation] = useState<{ lat: number; lon: number } | null>(null);
 
   useEffect(() => {
     // Retrieve user info
@@ -42,6 +43,24 @@ export default function Dashboard() {
   const handleLogout = () => {
     localStorage.removeItem("user");
     router.push("/");
+  };
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+          });
+        },
+        (error) => {
+          alert("Error getting location: " + error.message);
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
   };
 
   return (
@@ -91,6 +110,14 @@ export default function Dashboard() {
         </CardContent>
       </Card>
 
+       {/* GPS Button */}
+      <Button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 text-lg mb-4" onClick={getLocation}>
+        Get Location
+      </Button>
+      {location && (
+        <p className="text-lg mb-4">Latitude: {location.lat}, Longitude: {location.lon}</p>
+      )}
+      
       {/* Logout Button */}
       <Button className="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-2 text-lg" onClick={handleLogout}>
         Logout
