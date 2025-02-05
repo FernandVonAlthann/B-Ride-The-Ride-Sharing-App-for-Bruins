@@ -61,16 +61,15 @@ export default function Forum() {
       <Input placeholder="Thread Title" value={title} onChange={(e) => setTitle(e.target.value)} />
       <Textarea placeholder="Thread Content" value={content} onChange={(e) => setContent(e.target.value)} className="mt-2" />
       <Button onClick={addThread} className="mt-2 bg-blue-600 text-white">Post Thread</Button>
-
+      <Button onClick={() => router.push("/dashboard")} className="bg-gray-500 hover:bg-gray-600 text-white">
+          Go Back
+      </Button>
       <div className="mt-6">
         {threads.map(thread => (
           <div key={thread.id} className="border p-4 mb-4">
             <h2 className="text-xl font-bold">{thread.title}</h2>
             <p>{thread.content}</p>
             <Button onClick={() => likeThread(thread.id)} className="mt-2">❤️ {thread.likes}</Button>
-            <Button onClick={() => router.push("/dashboard")} className="bg-gray-500 hover:bg-gray-600 text-white">
-                Go Back
-            </Button>
             <div className="mt-2">
               <Input placeholder="Reply..." onKeyDown={(e) => {
                 if (e.key === "Enter") addReply(thread.id, e.currentTarget.value);
