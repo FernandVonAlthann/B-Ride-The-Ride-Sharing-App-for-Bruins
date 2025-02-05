@@ -82,6 +82,9 @@ export default function Dashboard() {
         <Button className="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-2 text-lg" onClick={() => router.push("/messages")}>
           Direct Messages
         </Button>
+        <Button className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 text-lg col-span-2" onClick={() => router.push("map")}>
+          View Map
+        </Button>
       </div>
 
       {/* Upcoming Rides Section */}
