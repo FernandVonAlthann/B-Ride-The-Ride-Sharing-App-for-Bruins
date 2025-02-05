@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation"; // Import router
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,7 +18,8 @@ export default function Forum() {
   const [threads, setThreads] = useState<Thread[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-
+  const router = useRouter(); // Initialize router
+  
   useEffect(() => {
     const storedThreads = JSON.parse(localStorage.getItem("threads") || "[]");
     setThreads(storedThreads);
@@ -66,6 +68,9 @@ export default function Forum() {
             <h2 className="text-xl font-bold">{thread.title}</h2>
             <p>{thread.content}</p>
             <Button onClick={() => likeThread(thread.id)} className="mt-2">❤️ {thread.likes}</Button>
+            <Button onClick={() => router.push("/dashboard")} className="bg-gray-500 hover:bg-gray-600 text-white">
+                Go Back
+            </Button>
             <div className="mt-2">
               <Input placeholder="Reply..." onKeyDown={(e) => {
                 if (e.key === "Enter") addReply(thread.id, e.currentTarget.value);
