@@ -76,6 +76,10 @@ npm run dev
 # Components
 
 # Backend
+/src/app/api/auth.ts
+/src/app/api/signup.ts
+/src/app/api/locations.ts
+/public/server/index.js
 
 # Frontend
 
