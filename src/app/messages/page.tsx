@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation"; // Import router
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function Messages() {
   const [messages, setMessages] = useState<string[]>([]);
   const [message, setMessage] = useState("");
-
+  const router = useRouter(); // Initialize router
+  
   useEffect(() => {
     const storedMessages = JSON.parse(localStorage.getItem("messages") || "[]");
     setMessages(storedMessages);
@@ -32,6 +34,9 @@ export default function Messages() {
 
       <Input placeholder="Type a message..." value={message} onChange={(e) => setMessage(e.target.value)} className="mt-2" />
       <Button onClick={sendMessage} className="mt-2 bg-blue-600 text-white">Send</Button>
+      <Button onClick={() => router.push("/dashboard")} className="bg-gray-500 hover:bg-gray-600 text-white">
+          Go Back
+      </Button>
     </div>
   );
 }
