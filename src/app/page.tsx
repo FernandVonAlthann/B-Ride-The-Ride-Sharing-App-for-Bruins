@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import "./globals.css";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,9 +26,13 @@ export default function Home() {
     router.push("/signup");
   };
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black p-6">
+    
+{/* Logo at the Top */}
+      <Image src="/logo.png" alt="B-Ride Logo" width={300} height={300} className="mb-4" />
+      
       <h1 className="text-4xl font-bold mb-6">B-Ride</h1>
-      <Card className="w-96 shadow-xl bg-white text-gray-800">
+      <Card className="w-96 shadow-xl bg-gray-100 text-gray-800">
         <CardHeader>
           <CardTitle className="text-center text-2xl">Login</CardTitle>
         </CardHeader>
@@ -52,9 +58,12 @@ export default function Home() {
           </div>
         </CardContent>
       </Card>
+
+{/* About B-Ride */}
       <p className="mt-6 text-center text-lg max-w-md">
-        B-Ride is a community-driven ride-sharing platform for UCLA students, providing safe and efficient travel options. Join today and make your commute easier!
+        <strong>B-Ride</strong> is a community-driven ride-sharing platform for UCLA students, providing safe and efficient travel options. Join today and make your commute easier!
       </p>
+
     </div>
   );
 }
