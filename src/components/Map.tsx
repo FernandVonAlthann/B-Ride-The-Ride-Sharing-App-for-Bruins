@@ -6,8 +6,8 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css"; // Import Leaflet's CSS for proper styling
 
 const containerStyle = {
-  width: "100%",
-  height: "800px",
+  width: "1800px",
+  height: "850px",
 };
 
 const defaultCenter = {
