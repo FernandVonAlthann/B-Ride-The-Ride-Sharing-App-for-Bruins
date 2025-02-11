@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import "./globals.css";
 import Map from "@/components/Map";
 import { Button } from "@/components/ui/button";
 
