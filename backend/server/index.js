@@ -19,8 +19,10 @@ app.get("/",(req,res)=>{
 // USERS DATABASE: 
 
 // Add user
-// example: POST: http://localhost:5001/users
-app.post("/users",async(req,res)=>{
+// POST: http://localhost:5001/users/add
+// Provide JSON body with the following order: name, email, password
+// Scroll all the way down for a sample JSON BODY 
+app.post("/users/add",async(req,res)=>{
     try
     {
       const { name,email,password }=req.body;
@@ -43,7 +45,6 @@ app.post("/users",async(req,res)=>{
     }
 })
 
-// --------------------------------- Data retreive ---------------------------------
 
 // Get all users
 // GET: http://localhost:5001/users
@@ -60,12 +61,10 @@ app.get("/users",async(req,res)=>{
     }
 })
 
-// Get a specific user with ID  (one result only bc user id is unique)
 
-// example: 
+// Get a specific user with ID  (one result only bc user id is unique) 
 // GET: http://localhost:5001/users/id/1
 // The command above will pass 1 in the id parameter in the function below
-
 app.get("/users/id/:id",async(req,res)=>{
     try
     {
@@ -76,23 +75,21 @@ app.get("/users/id/:id",async(req,res)=>{
 
       if(user.rows.length===0)
       {
-        res.status(404).send("User not found with the ID provided");
+        return res.status(404).send("User not found with the ID provided");
       }
       res.json(user.rows[0]);
     }
     catch(err)
     {
         console.error(err.message);
-        res.status(500).send("Server Error: getting a user with id");
+        return res.status(500).send("Server Error: getting a user with id");
     }
 })
 
+
 // Get a specific user with email   (one result only bc user id is unique)
-
-// example: 
-// http://localhost:5001/users/email/alice@example.com
+// GET: http://localhost:5001/users/email/alice@example.com
 // The command above will pass alice@example.com in the email parameter in the function below
-
 app.get("/users/email/:email",async(req,res)=>{
     try
     {
@@ -102,7 +99,7 @@ app.get("/users/email/:email",async(req,res)=>{
 
       if(user.rows.length===0)
       {
-        res.status(404).send("User not found with the email provided");
+        return res.status(404).send("User not found with the email provided");
       }
       
       res.json(user.rows[0]);
@@ -110,15 +107,15 @@ app.get("/users/email/:email",async(req,res)=>{
     catch(err)
     {
         console.error(err.message);
-        res.status(500).send("Server Error: getting a user with email");
+        return res.status(500).send("Server Error: getting a user with email");
 
     }
 })
 
+
 // Update password / Change password 
 // PUT: http://localhost:5001/users/password/alice@example.com
-// PROVIDE BODY of newPassword
-
+// PROVIDE JSON BODY of newPassword
 app.put("/users/password/:email", async (req, res)=>{
     try{
         const{email}=req.params;
@@ -141,10 +138,153 @@ app.put("/users/password/:email", async (req, res)=>{
 });
 
 
-app.listen(5001,()=>{
-    console.log("server has started on port 5001");
+// Delete a user
+// DELETE: http://localhost:5001/users/delete/(id)
+app.delete("/users/delete/:id",async(req,res)=>{
+
+  try{
+    const {id} = req.params;
+    console.log("Deleting a user with ID: ", id);
+
+    const deleteUser = await pool.query("DELETE FROM users WHERE id = $1 RETURNING *;", [id]);
+
+    if(deleteUser.rows.length===0)
+      {
+       return res.status(404).send("User not found with the id provided");
+      }
+    res.json({message: "Successful: User deleted",deleted_user: deleteUser.rows[0]});
+
+  } catch(err)
+  {
+    console.error(err.message);
+    res.status(500).send("Server Error: deleting a user");
+  }
 });
 
+
+
+
+//Rides:
+
+// Create a ride (Does not allow same user to create more than one ride)
+// POST: http://localhost:5001/rides/create
+// Provide JSON body with the following order: user_id , pickup_location , dropoff_location,cost
+app.post("/rides/create",async(req,res)=>{
+
+  try{
+    const{user_id, pickup_location,dropoff_location,cost} = req.body;
+    if(!user_id||!pickup_location||!dropoff_location||cost===null)  //cost===undefined?
+    {
+      return res.status(400).json({ error: "Error: Missing required field(s)." }); 
+    }
+
+    const existingRide = await pool.query("SELECT * FROM rides WHERE user_id = $1 AND status = 'pending';", [user_id]); //status = 'in progress'
+    if(existingRide.rows.length>0)
+      {
+       return res.status(404).send("Cannot creata a new ride with an ongoing ride.");
+      }
+    const newRide = await pool.query("INSERT INTO rides (user_id, pickup_location, dropoff_location, cost) VALUES ($1,$2,$3,$4) RETURNING *;", [user_id, pickup_location, dropoff_location, cost]);
+    res.json(newRide.rows[0]);
+  } catch(err)
+  {
+      console.error(err.message);
+      res.status(500).send("Server Error: adding a ride");
+  }
+});
+
+
+// Retreive all ride
+// GET: http://localhost:5001/rides
+app.get("/rides",async(req,res)=>{
+  try
+  {
+    const allRides = await pool.query("SELECT * FROM rides" );
+    res.json(allRides.rows);
+  }
+  catch(err)
+  {
+      console.error(err.message);
+      res.status(500).send("Server Error: getting all rides");
+  }
+})
+
+
+// Retreive an ongoing ride with user ID
+// GET: 
+app.get("/ride/id/:user_id",async(req,res)=>{
+  try
+  {
+    console.log("FETCHING RIDE INFO WITH USER ID: ", req.params.user_id);    //DEBUGGIN STATEMENT
+
+    const {user_id} = req.params; 
+    const ride = await pool.query("SELECT * FROM rides WHERE user_id = $1 AND status = 'pending';" , [user_id] );
+
+    if(ride.rows.length===0)
+    {
+      return res.status(404).send("Ride not found with the USER ID provided");
+    }
+    res.json(ride.rows[0]);
+  }
+  catch(err)
+  {
+      console.error(err.message);
+      return res.status(500).send("Server Error: getting a ride info with user id");
+  }
+})
+
+// Delete a ride
+// DELETE: http://localhost:5001/rides/delete/(id)
+app.delete("/rides/delete/:id",async(req,res)=>{
+
+  try{
+    const {id} = req.params;
+    console.log("Deleting ride with ID: ", id);
+
+    const deleteRide = await pool.query("DELETE FROM rides WHERE id = $1 RETURNING *;", [id]);
+
+    if(deleteRide.rows.length===0)
+      {
+       return res.status(404).send("Ride not found with the id provided");
+      }
+    res.json({message: "Successful: Ride deleted"});
+
+  } catch(err)
+  {
+    console.error(err.message);
+    res.status(500).send("Server Error: deleting a ride");
+  }
+});
+
+
+app.listen(5001,()=>{
+  console.log("server has started on port 5001");
+});
+
+/*
+Sample JSON BODY for add user:
+{
+  "name": "Whatever Bro",
+  "email": "bro@example.com",
+  "password": "mybro"
+}
+*/
+
+/*
+Sample JSON BODY for update password:
+{
+  "newPassword": "newPW"
+}
+*/
+
+/*
+Sample JSON BODY for create ride:
+{
+  "user_id": 5,
+  "pickup_location": "UCLA Store",
+  "dropoff_location": "Compton",
+  "cost": 5.9
+}
+*/
 
 
 
@@ -157,3 +297,17 @@ app.listen(5001,()=>{
 // 401 unauthorized
 // 403 forbidden
 // 409 Conflict
+
+//Template:
+// app.post("/rides",async(req,res)=>{
+
+//   try{
+
+//   } catch(err)
+//   {
+    
+//   }
+// });
+
+// Considerations:
+// Can one user have two active rides?

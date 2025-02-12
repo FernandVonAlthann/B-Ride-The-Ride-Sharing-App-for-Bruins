@@ -10,8 +10,13 @@ CREATE TABLE users (
 
 CREATE TABLE rides (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES users(id),
+    user_id INTEGER REFERENCES users(id),   --if user id is deleted, delete ride?
     pickup_location VARCHAR(255) NOT NULL,
     dropoff_location VARCHAR(255) NOT NULL,
-    status VARCHAR(50) DEFAULT 'pending'
+    status VARCHAR(50) DEFAULT 'pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    completet_at TIMESTAMP NULL,
+    cost DECIMAL(10,2)
 );
+
+can ya
