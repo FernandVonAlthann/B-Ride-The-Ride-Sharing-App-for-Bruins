@@ -19,4 +19,3 @@ CREATE TABLE rides (
     cost DECIMAL(10,2)
 );
 
-can ya
