@@ -63,7 +63,7 @@ export default function Dashboard() {
       alert("Geolocation is not supported by this browser.");
     }
   };
-
+  
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6">
       <h1 className="text-4xl font-bold mb-2">Welcome, {user.name || "Bruin"}! 🚗</h1>
@@ -85,6 +85,18 @@ export default function Dashboard() {
         </Button>
         <Button className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 text-lg col-span-2" onClick={() => router.push("map")}>
           View Map
+        </Button>
+	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/profile")}>
+  	  View My Profile
+        </Button>
+	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/ride-history")}>
+  	  View My Ride History
+        </Button>
+	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/saved-locations")}>
+  	  View My Saved Locations
+        </Button>
+	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/Ratings-Reviews")}>
+  	  Ratings and Reviews
         </Button>
       </div>
 
@@ -121,7 +133,9 @@ export default function Dashboard() {
       {location && (
         <p className="text-lg mb-4">Latitude: {location.lat}, Longitude: {location.lon}</p>
       )}
-      
+      <Button className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/emergency-contact")}>
+        🚨 Emergency Contact
+      </Button>
       {/* Logout Button */}
       <Button className="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-2 text-lg" onClick={handleLogout}>
         Logout
