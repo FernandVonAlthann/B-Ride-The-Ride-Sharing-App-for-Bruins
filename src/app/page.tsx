@@ -15,11 +15,7 @@ export default function Home() {
   const [name, setName] = useState("");
 
   const handleLogin = () => {
-    if (email && password) {
-      router.push("/dashboard");
-    } else {
-      alert("Please enter email and password");
-    }
+      router.push("/login");
   };
 
   const handleSignup = () => {
@@ -33,27 +29,15 @@ export default function Home() {
       
       <h1 className="text-4xl font-bold mb-6">B-Ride</h1>
       <Card className="w-96 shadow-xl bg-gray-100 text-gray-800">
-        <CardHeader>
-          <CardTitle className="text-center text-2xl">Login</CardTitle>
-        </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <Input 
-              type="email" 
-              placeholder="Email" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <Input 
-              type="password" 
-              placeholder="Password" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" onClick={handleLogin}>Login</Button>
+            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" onClick={handleLogin}>
+	    	    Login
+	    </Button>
             <div className="text-center text-sm text-gray-600 mt-2">
-              Don't have an account? 
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white"  onClick={handleSignup}> Sign up</Button>
+            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white"  onClick={handleSignup}>
+	    	     Sign up
+	    </Button>
             </div>
           </div>
         </CardContent>
@@ -61,7 +45,7 @@ export default function Home() {
 
 {/* About B-Ride */}
       <p className="mt-6 text-center text-lg max-w-md">
-        <strong>B-Ride</strong> is a community-driven ride-sharing platform for UCLA students, providing safe and efficient travel options. Join today and make your commute easier!
+        <strong>B-Ride landing page</strong>
       </p>
 
     </div>
