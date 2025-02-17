@@ -101,6 +101,10 @@ export default function Dashboard() {
 	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/ride-matching")}>
   	  Live Matchmaking
         </Button>
+	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/group-chat")}>
+  	  Group Chat
+        </Button>
+
       </div>
 
       {/* Upcoming Rides Section */}
