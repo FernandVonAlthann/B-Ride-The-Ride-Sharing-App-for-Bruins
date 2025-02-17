@@ -136,9 +136,9 @@ export default function Dashboard() {
       <Button className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/emergency-contact")}>
         🚨 Emergency Contact
       </Button>
-      {/* Logout Button */}
+      {/* Sign out Button */}
       <Button className="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-2 text-lg" onClick={handleLogout}>
-        Logout
+        Sign Out
       </Button>
     </div>
   );
