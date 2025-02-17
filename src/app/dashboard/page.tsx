@@ -148,6 +148,15 @@ export default function Dashboard() {
       <Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/dark-mode")}>
   	Enable Dark Mode
       </Button>
+      <Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/referral")}>
+  	  Refer A Friend
+      </Button>
+      <Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/referral-redeem")}>
+  	  Input Referral Code
+      </Button>
+      <Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/language")}>
+  	  Language
+      </Button>
       {/* Sign out Button */}
       <Button className="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-2 text-lg" onClick={handleLogout}>
         Sign Out
