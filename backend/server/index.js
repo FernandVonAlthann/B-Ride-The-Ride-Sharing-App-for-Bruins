@@ -1,6 +1,13 @@
+/*
+SEE request.rest to see how the commands are used
+*/
+
 const express = require("express");
-const cors = require("cors")
+const cors = require("cors");
 const pool = require("./db");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require("dotenv").config();
 const { use } = require("react");
 const { unauthorized, forbidden } = require("next/navigation");
 
@@ -27,14 +34,18 @@ app.post("/users/add",async(req,res)=>{
     {
       const { name,email,password }=req.body;
 
+      // Check for if there is duplicate emails in the database
       const duplicateEmailExists = await pool.query("SELECT * FROM users WHERE email = $1;", [email]);
       if(duplicateEmailExists.rows.length>0)
       {
         return res.status(400).json({ error: "Error: Email already exists" }); 
       }
+      // Hashing Password
+      const salt = await bcrypt.genSalt();
+      const hashedPassword = await bcrypt.hash(password,salt);
 
       const newUser = await pool.query("INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *;",
-      [name, email, password]
+      [name, email, hashedPassword]
       );
       res.json(newUser.rows[0]);
     }
@@ -46,13 +57,17 @@ app.post("/users/add",async(req,res)=>{
 })
 
 
-// Get all users
+// Login: Get the user (For Login)
 // GET: http://localhost:5001/users
-app.get("/users",async(req,res)=>{
+app.get("/users", authenticateToken ,async(req,res)=>{
     try
     {
       const allUsers = await pool.query("SELECT * FROM users" );
-      res.json(allUsers.rows);
+      // console.log("Requesting User ID:", req.user.userID); //DEBUG
+      const filteredUsers = allUsers.rows.filter(user => user.id === req.user.userID);
+      // console.log("Filtered Users:", filteredUsers);   //DEBUG
+
+      return res.json(filteredUsers);
     }
     catch(err)
     {
@@ -61,6 +76,19 @@ app.get("/users",async(req,res)=>{
     }
 })
 
+// GET all users
+app.get("/users/getallusers",async(req,res)=>{
+  try
+  {
+    const allUsers = await pool.query("SELECT * FROM users" );
+    res.json(allUsers.rows);
+  }
+  catch(err)
+  {
+      console.error(err.message);
+      res.status(500).send("Server Error: getting all user");
+  }
+})
 
 // Get a specific user with ID  (one result only bc user id is unique) 
 // GET: http://localhost:5001/users/id/1
@@ -81,11 +109,10 @@ app.get("/users/id/:id",async(req,res)=>{
     }
     catch(err)
     {
-        console.error(err.message);
+        console.error(err.message); 
         return res.status(500).send("Server Error: getting a user with id");
     }
 })
-
 
 // Get a specific user with email   (one result only bc user id is unique)
 // GET: http://localhost:5001/users/email/alice@example.com
@@ -161,6 +188,38 @@ app.delete("/users/delete/:id",async(req,res)=>{
   }
 });
 
+// Login
+// POST: http://localhost:5001/users/login
+// PROVIDE JSON BODY for email and password
+app.post("/users/login",async(req,res)=>{
+
+  try{
+    console.log("reached login route");
+    const {email,password} = req.body;
+    // Check if email exists in the database
+    const userQ = await pool.query("SELECT * FROM users WHERE email = $1",[email]);
+    if(userQ.rows.length<1)
+    {
+      return res.status(400).json({error: "Email has not been registered."});
+    }
+
+    const user = userQ.rows[0];
+
+    // Check if password is correct
+    if(!await bcrypt.compare(password,user.password))
+    {
+      return res.status(400).json({error: "Incorrect email or password."});
+    }
+
+    // Login Success
+    const accessToken = jwt.sign({userID: user.id, email: user.email}, process.env.ACCESS_TOKEN);
+    return res.json({ message: "Login successful!", accessToken: accessToken, user:{id:user.id , name: user.name , email: user.email} });
+
+  } catch(err)
+  {
+    res.status(500).json({error: "Server Error: User Login"});
+  }
+});
 
 
 
@@ -255,6 +314,33 @@ app.delete("/rides/delete/:id",async(req,res)=>{
   }
 });
 
+function authenticateToken(req,res,next)
+{
+  console.log("Received Headers:", req.headers); 
+  const authHeader = req.headers["authorization"]; 
+  const token = authHeader && authHeader.split(' ')[1];
+
+  console.log("Authorization Header:", authHeader);
+  //console.log(token);
+
+  if(!token)
+  {
+    return res.status(401).send("No Tokens");
+  }
+
+  jwt.verify(token,process.env.ACCESS_TOKEN, (err,user) =>{
+    if(err)
+    {
+      return res.status(403).send("Verification failed");
+    }
+    console.log("In authToken() , User: ",user);
+    
+    req.user = user;
+    console.log("reached next");
+    next();
+  });
+
+}
 
 app.listen(5001,()=>{
   console.log("server has started on port 5001");
@@ -311,3 +397,4 @@ Sample JSON BODY for create ride:
 
 // Considerations:
 // Can one user have two active rides?
+
