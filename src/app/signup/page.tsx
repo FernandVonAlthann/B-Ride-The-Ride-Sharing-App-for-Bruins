@@ -51,10 +51,15 @@ export default function Signup() {
               value={password} 
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button className="w-full bg-green-600 hover:bg-green-700 text-white" onClick={handleSignup}>Create Account</Button>
+            <Button className="w-full bg-green-600 hover:bg-green-700 text-white" onClick={handleSignup}>
+	    	    Create Account
+	    </Button>
             <div className="text-center text-sm text-gray-600 mt-2">
               Already have an account? 
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" onClick={() => router.push("/")}> Log in</Button>
+              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" onClick={() => router.push("/login")}>
+	      	      Log in
+	      </Button>
+	      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" onClick={() => router.push("/")}> Go Back To Landing </Button>
             </div>
           </div>
         </CardContent>
