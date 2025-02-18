@@ -13,10 +13,16 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (name && email && password) {
+      
       const user = { name, email, password };
-      localStorage.setItem("user", JSON.stringify(user));
+      const res = await fetch("http://localhost:5001/users/add",{
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(user)
+      });
+
       alert("Account created! You can now log in.");
       router.push("/");
     } else {
