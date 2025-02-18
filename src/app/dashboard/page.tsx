@@ -165,7 +165,7 @@ export default function Dashboard() {
       </Button>
       {/* Sign out Button */}
       <Button className="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-2 text-lg" onClick={handleLogout}>
-        Sign Out
+        Delete Account In As Fast As A Single Click
       </Button>
       <Button className="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-2 text-lg" onClick={handleSafeLogout}>
         Logout to Landing
