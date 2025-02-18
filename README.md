@@ -63,7 +63,6 @@ cd B-Ride-The-Ride-Sharing-App-for-Bruins
 ```
 npm install
 npm install leaflet
-
 ```
 
 4. Run the application
