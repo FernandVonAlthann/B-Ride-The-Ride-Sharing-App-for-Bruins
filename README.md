@@ -63,7 +63,6 @@ cd B-Ride-The-Ride-Sharing-App-for-Bruins
 ```
 npm install
 npm install leaflet
-npm install @stripe/stripe-js @stripe/react-stripe-js
 
 ```
 
