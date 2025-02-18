@@ -44,6 +44,10 @@ export default function Dashboard() {
     localStorage.removeItem("user");
     router.push("/");
   };
+  
+  const handleSafeLogout = () => {
+    router.push("/");
+  };
 
   const getLocation = () => {
     if (navigator.geolocation) {
@@ -109,7 +113,6 @@ export default function Dashboard() {
 	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/payment")}>
   	  Payment
         </Button>
-
       </div>
 
       {/* Upcoming Rides Section */}
@@ -163,6 +166,9 @@ export default function Dashboard() {
       {/* Sign out Button */}
       <Button className="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-2 text-lg" onClick={handleLogout}>
         Sign Out
+      </Button>
+      <Button className="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-2 text-lg" onClick={handleSafeLogout}>
+        Logout to Landing
       </Button>
     </div>
   );
