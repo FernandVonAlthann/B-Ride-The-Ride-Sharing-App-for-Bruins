@@ -11,11 +11,14 @@ export default function MapPage() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
       <h1 className="text-3xl font-bold mb-4">Live User Locations</h1>
       <div className="w-[50vw] h-[50vh] rounded-md shadow-md">
-      	   <Map />
+        <Map />
       </div>
-      <Button onClick={() => router.push("/dashboard")} className="bg-gray-500 hover:bg-gray-600 text-white">
-          Go Back
-        </Button>
+      <Button
+        onClick={() => router.push("/dashboard")}
+        className="bg-gray-500 hover:bg-gray-600 text-white mt-4"
+      >
+        Go Back
+      </Button>
     </div>
   );
 }
