@@ -21,7 +21,7 @@ export default function RideHistory() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black p-6">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-green-400 to-blue-500 text-white p-6">
       <h1 className="text-3xl font-bold mb-6">Ride History</h1>
       <Card className="w-full max-w-lg bg-gray-100 text-gray-800 shadow-lg">
         <CardHeader>
@@ -33,7 +33,9 @@ export default function RideHistory() {
               rideHistory.map((ride, index) => (
                 <div key={index} className="border-b pb-2">
                   <p className="text-lg font-semibold">{ride.from} → {ride.to}</p>
-                  <p className="text-sm text-gray-500">{new Date(ride.time).toLocaleString()}</p>
+                  <p className="text-sm text-gray-500">
+                    {new Date(ride.time).toLocaleString()}
+                  </p>
                 </div>
               ))
             ) : (
@@ -42,7 +44,12 @@ export default function RideHistory() {
           </div>
         </CardContent>
       </Card>
-      <Button className="mt-6 bg-gray-500 hover:bg-gray-600 text-white" onClick={() => router.push("/dashboard")}>Back to Dashboard</Button>
+      <Button
+        className="mt-6 bg-gray-500 hover:bg-gray-600 text-white"
+        onClick={() => router.push("/dashboard")}
+      >
+        Back to Dashboard
+      </Button>
     </div>
   );
 }

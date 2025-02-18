@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import "./globals.css";
 import { useRouter } from "next/navigation"; // Import router
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

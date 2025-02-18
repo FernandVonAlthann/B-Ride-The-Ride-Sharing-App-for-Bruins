@@ -1,17 +1,41 @@
 import React from 'react';
 
-export const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className }) => {
-  return <div className={`bg-white p-6 rounded-lg shadow-md ${className}`}>{children}</div>;
+// The main Card component
+export const Card: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+}> = ({ children, className }) => {
+  return (
+    <div className={`bg-white p-6 rounded-lg shadow-md ${className || ""}`}>
+      {children}
+    </div>
+  );
 };
 
-export const CardHeader: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return <div className="mb-4">{children}</div>;
+// The CardHeader component
+export const CardHeader: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+}> = ({ children, className }) => {
+  return <div className={`mb-4 ${className || ""}`}>{children}</div>;
 };
 
-export const CardTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return <h2 className="text-xl font-semibold">{children}</h2>;
+// The CardTitle component that now supports className
+export const CardTitle: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+}> = ({ children, className }) => {
+  return (
+    <h2 className={`text-xl font-semibold ${className || ""}`}>
+      {children}
+    </h2>
+  );
 };
 
-export const CardContent: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return <div>{children}</div>;
+// The CardContent component
+export const CardContent: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+}> = ({ children, className }) => {
+  return <div className={className}>{children}</div>;
 };

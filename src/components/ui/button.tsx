@@ -2,9 +2,9 @@ import React from 'react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 
-export const Button: React.FC<ButtonProps> = ({ children, ...props }) => {
+export const Button: React.FC<ButtonProps> = ({ children, className, ...props }) => {
   return (
-    <button {...props} className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+    <button {...props} className={className}>
       {children}
     </button>
   );
