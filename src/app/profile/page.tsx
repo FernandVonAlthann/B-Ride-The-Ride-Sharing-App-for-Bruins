@@ -32,6 +32,12 @@ export default function ProfilePage() {
       >
         Back to Dashboard
       </Button>
+       <Button 
+        className="mt-6 bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 text-lg" 
+        onClick={() => router.push("/profileapp")}
+      >
+        Edit Profile
+      </Button>
     </div>
   );
 }
