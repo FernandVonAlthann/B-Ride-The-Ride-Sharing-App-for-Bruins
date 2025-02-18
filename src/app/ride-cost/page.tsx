@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -70,6 +69,12 @@ export default function RideCostEstimation() {
         onClick={() => router.push("/dashboard")}
       >
         Back to Dashboard
+      </Button>
+       <Button
+        className="mt-6 bg-gray-500 hover:bg-gray-600 text-white"
+        onClick={() => router.push("/faresplit")}
+      >
+        Split Fare
       </Button>
     </div>
   );
