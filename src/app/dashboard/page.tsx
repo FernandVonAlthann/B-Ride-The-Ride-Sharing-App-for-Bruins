@@ -89,6 +89,9 @@ export default function Dashboard() {
         <Button className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 text-lg col-span-2" onClick={() => router.push("map")}>
           View Map
         </Button>
+	<Button className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 text-lg col-span-2" onClick={() => router.push("AI-Chat-Assistant")}>
+          Chat With An Assistant
+        </Button>
 	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/profile")}>
   	  View My Profile
         </Button>
