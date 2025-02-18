@@ -28,6 +28,10 @@ export default function FindRide() {
           <div key={idx} className="border p-4 mb-2">
             <p><strong>{ride.from} → {ride.to}</strong></p>
             <p className="text-gray-500">{ride.time}</p>
+	    price USD
+	    <p className="text-gray-500">{ride.price}</p>
+	    max passengers
+	    <p className="text-gray-500">{ride.maxPassengers}</p>
           </div>
         ))}
       </div>
