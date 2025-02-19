@@ -45,7 +45,6 @@ export default function ProfilePage() {
           <h2 className="text-lg font-semibold mt-4">Preferences</h2>
           <p><strong>Language:</strong> {user.preferences?.language || "English"}</p>
           <p><strong>Ride Preference:</strong> {user.preferences?.ridePreference || "Comfort"}</p>
-          <p><strong>Dark Mode:</strong> {user.preferences?.darkMode ? "Enabled" : "Disabled"}</p>
         </CardContent>
       </Card>
 
