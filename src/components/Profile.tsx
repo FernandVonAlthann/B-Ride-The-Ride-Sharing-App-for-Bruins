@@ -13,7 +13,6 @@ export default function ProfilePage() {
     bio: "I love road trips and carpooling!",
     profilePic: "/default-avatar.png",
     preferences: {
-      darkMode: false,
       language: "English",
       ridePreference: "Comfort",
     },
@@ -99,17 +98,6 @@ export default function ProfilePage() {
 
         {/* Preferences */}
         <h2 className="text-lg font-semibold mt-4 mb-2">Preferences</h2>
-
-        {/* Dark Mode Toggle */}
-        <label className="flex items-center justify-between">
-          <span>Dark Mode</span>
-          <input
-            type="checkbox"
-            checked={profile.preferences.darkMode}
-            onChange={(e) => handlePreferenceChange("darkMode", e.target.checked)}
-            className="ml-2"
-          />
-        </label>
 
         {/* Language Selection */}
         <label className="block font-semibold text-left mt-3">Language</label>
