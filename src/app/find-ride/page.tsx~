@@ -1,0 +1,7 @@
+export default function FindRide() {
+  return (
+    <div className="flex items-center justify-center min-h-screen text-2xl font-bold">
+      Find a Ride Page Coming Soon!
+    </div>
+  );
+}
