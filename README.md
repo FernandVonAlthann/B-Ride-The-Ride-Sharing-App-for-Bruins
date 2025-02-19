@@ -64,7 +64,6 @@ cd B-Ride-The-Ride-Sharing-App-for-Bruins
 npm install
 npm install leaflet
 npm install bcrypt dotenv jsonwebtoken
-npm install pg
 ```
 
 4. Run the application
