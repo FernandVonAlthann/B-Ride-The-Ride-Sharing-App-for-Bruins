@@ -13,9 +13,35 @@ export default function Home() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (email && password) {
-      router.push("/dashboard");
+      try
+      {
+        const res = await fetch("http://localhost:5001/users/login", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({email,password})
+        });
+
+        const currentUser = await res.json();
+        
+        if(res.ok)
+        {
+        // console.log("current user: " , currentUser.user);  //DEBUG
+        // console.log("token: " , currentUser.accessToken);  //DEBUG
+        localStorage.setItem("token" , currentUser.accessToken);
+        localStorage.setItem("user",JSON.stringify(currentUser.user));
+
+        router.push("/dashboard");
+        }else{
+          throw new Error(currentUser.error);
+        }
+      }
+      catch(err)
+      {
+        alert(err.message);
+      }
+     
     } else {
       alert("Please enter email and password");
     }
