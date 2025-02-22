@@ -40,10 +40,30 @@ export default function Dashboard() {
     setRides(updatedRides); // Update state
   };
 
-  const handleLogout = () => {  // Delete User
-    // localStorage.removeItem("user");
-    // localStorage.removeItem("token");
-    // alert("Logged out successfully!");
+  const handleLogout = async() => {  // Delete User
+    try
+    {
+      const res = await fetch(`http://localhost:5001/users/delete/${user.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+       });
+
+       const deletedUser = await res.json();
+
+       alert("User deleted successfully!");
+      router.push("/");
+      
+       if(!res.ok)
+       {
+        throw new Error(deletedUser.error);
+       }  
+    }
+    catch(err)
+    {
+      alert(err.message);
+    }
     router.push("/");
   };
   
