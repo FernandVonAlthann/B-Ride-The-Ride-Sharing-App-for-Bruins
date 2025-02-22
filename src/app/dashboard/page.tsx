@@ -40,12 +40,17 @@ export default function Dashboard() {
     setRides(updatedRides); // Update state
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
+  const handleLogout = () => {  // Delete User
+    // localStorage.removeItem("user");
+    // localStorage.removeItem("token");
+    // alert("Logged out successfully!");
     router.push("/");
   };
   
-  const handleSafeLogout = () => {
+  const handleSafeLogout = () => {  // Basic Logout
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    alert("Logged out successfully!");
     router.push("/");
   };
 
