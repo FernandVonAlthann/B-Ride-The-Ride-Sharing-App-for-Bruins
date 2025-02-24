@@ -1,0 +1,57 @@
+// components/Map.tsx
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation"; // Import router
+import dynamic from "next/dynamic"; // Import dynamic from next
+import { Button } from "@/components/ui/button";
+
+// Dynamically import Leaflet (disable SSR)
+const L = dynamic(() => import("leaflet"), { ssr: false });
+
+const containerStyle = {
+  width: "100%",
+  height: "400px",
+};
+
+const defaultCenter = {
+  lat: 34.0689, // Default to UCLA
+  lng: -118.4452,
+};
+
+export default function Map() {
+  const [locations, setLocations] = useState<{ lat: number; lng: number }[]>([]);
+  const router = useRouter(); // Initialize router
+  
+  useEffect(() => {
+    const fetchLocations = () => {
+      const storedLocations = JSON.parse(localStorage.getItem("userLocations") || "[]");
+      setLocations(storedLocations);
+    };
+    fetchLocations();
+    const interval = setInterval(fetchLocations, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    // Ensure Leaflet is fully loaded before initializing map
+    if (typeof window !== "undefined" && L && L.map) {
+      const map = L.map("map").setView([defaultCenter.lat, defaultCenter.lng], 12);
+
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
+
+      // Add markers from locations
+      locations.forEach((loc) => {
+        L.marker([loc.lat, loc.lng]).addTo(map);
+      });
+
+      return () => map.remove(); // Cleanup map on unmount
+    }
+  }, [locations]);
+
+  return (
+    <div className="relative w-full max-w-3xl mx-auto p-4">
+      <div id="map" style={containerStyle}></div>
+    </div>
+  );
+}
