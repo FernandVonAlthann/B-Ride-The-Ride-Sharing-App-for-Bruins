@@ -1,0 +1,32 @@
+### Get all users
+GET http://localhost:5001/users/getallusers
+
+### Get all users
+GET http://localhost:5001/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjI0LCJlbWFpbCI6InNhbHRAZXhhbXBsZS5jb20iLCJpYXQiOjE3Mzk3NjU0OTZ9.ZGgDge3xavhUol6hybCXVaiOY42PFRUUiYLk_TCge74
+
+### Get user with ID
+GET http://localhost:5001/users/id/20
+
+
+### Create a User
+POST http://localhost:5001/users/add
+Content-Type: application/json
+{
+  "name": "Eggert",
+  "email": "eggert@example.com",
+  "password": "eggedyou"
+}
+
+### Delete a User
+DELETE http://localhost:5001/users/delete/23
+
+### Login
+POST http://localhost:5001/users/login
+Content-Type: application/json
+
+{
+   "email": "eggert@example.com",
+   "password": "eggedyou"
+}
