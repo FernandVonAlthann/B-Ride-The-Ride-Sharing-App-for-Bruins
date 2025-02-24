@@ -19,34 +19,48 @@ export default function GroupChat() {
   const [newMessage, setNewMessage] = useState("");
   const [sender, setSender] = useState("Anonymous");
 
+  // Function to load messages from the API.
+  const loadMessages = async () => {
+    try {
+      const res = await fetch("/api/group-chat", { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to fetch group chat messages");
+      const data = await res.json();
+      // Assuming the API returns { messages: Message[] }
+      setMessages(data.messages || []);
+    } catch (error) {
+      console.error("Error fetching group chat messages:", error);
+    }
+  };
+
   // Load messages on mount and set up polling every 3 seconds.
   useEffect(() => {
-    const loadMessages = () => {
-      const storedMessages = JSON.parse(localStorage.getItem("groupChatMessages") || "[]");
-      setMessages(storedMessages);
-    };
-
     loadMessages();
-
     const interval = setInterval(() => {
       loadMessages();
     }, 3000);
-
     return () => clearInterval(interval);
   }, []);
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (newMessage.trim() === "") return;
-    const message: Message = {
-      id: Date.now(),
-      sender: sender,
-      content: newMessage,
-      timestamp: new Date().toISOString(),
-    };
-    const updatedMessages = [...messages, message];
-    localStorage.setItem("groupChatMessages", JSON.stringify(updatedMessages));
-    setMessages(updatedMessages);
-    setNewMessage("");
+    try {
+      const messagePayload = {
+        sender,
+        content: newMessage,
+      };
+      const res = await fetch("/api/group-chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(messagePayload),
+      });
+      if (!res.ok) throw new Error("Failed to send message");
+      // Optionally, you can use the response to update messages,
+      // or simply re-fetch messages.
+      await loadMessages();
+      setNewMessage("");
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
   };
 
   return (
@@ -63,7 +77,9 @@ export default function GroupChat() {
                 <div key={msg.id} className="mb-2">
                   <p className="font-semibold">{msg.sender}:</p>
                   <p>{msg.content}</p>
-                  <span className="text-xs text-gray-500">{new Date(msg.timestamp).toLocaleTimeString()}</span>
+                  <span className="text-xs text-gray-500">
+                    {new Date(msg.timestamp).toLocaleTimeString()}
+                  </span>
                 </div>
               ))
             ) : (
@@ -85,13 +101,19 @@ export default function GroupChat() {
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
             />
-            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" onClick={sendMessage}>
+            <Button
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+              onClick={sendMessage}
+            >
               Send Message
             </Button>
           </div>
         </CardContent>
       </Card>
-      <Button className="mt-6 bg-gray-500 hover:bg-gray-600 text-white" onClick={() => router.push("/dashboard")}>
+      <Button
+        className="mt-6 bg-gray-500 hover:bg-gray-600 text-white"
+        onClick={() => router.push("/dashboard")}
+      >
         Back to Dashboard
       </Button>
     </div>

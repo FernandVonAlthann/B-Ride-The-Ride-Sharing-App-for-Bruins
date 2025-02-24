@@ -1,3 +1,4 @@
+// app/ride-matching/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -7,9 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface Ride {
-  from: string;
-  to: string;
-  time: string;
+  id: number;
+  pickup_location: string;
+  dropoff_location: string;
+  created_at: string;
 }
 
 export default function RideMatching() {
@@ -19,20 +21,28 @@ export default function RideMatching() {
   const [toFilter, setToFilter] = useState("");
   const [matchedRides, setMatchedRides] = useState<Ride[]>([]);
 
+  const fetchRides = async (from = "", to = "") => {
+    try {
+      const queryParams = new URLSearchParams({ from, to });
+      const res = await fetch(`/api/rides?${queryParams.toString()}`);
+      if (!res.ok) {
+        throw new Error("Failed to fetch rides");
+      }
+      const data = await res.json();
+      setRides(data);
+      setMatchedRides(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    // Retrieve rides from localStorage (assuming they're stored under "rides")
-    const storedRides = JSON.parse(localStorage.getItem("rides") || "[]");
-    setRides(storedRides);
-    setMatchedRides(storedRides);
+    fetchRides();
   }, []);
 
   const handleSearch = () => {
-    const filtered = rides.filter((ride: Ride) => {
-      const fromMatches = ride.from.toLowerCase().includes(fromFilter.toLowerCase());
-      const toMatches = ride.to.toLowerCase().includes(toFilter.toLowerCase());
-      return fromMatches && toMatches;
-    });
-    setMatchedRides(filtered);
+    // Re-fetch rides with the applied filters
+    fetchRides(fromFilter, toFilter);
   };
 
   return (
@@ -68,13 +78,13 @@ export default function RideMatching() {
       <div className="w-full max-w-lg bg-white shadow-lg mt-6 p-4">
         <h2 className="text-xl font-bold mb-4">Matching Rides</h2>
         {matchedRides.length > 0 ? (
-          matchedRides.map((ride, index) => (
-            <div key={index} className="border-b pb-2 mb-2">
+          matchedRides.map((ride) => (
+            <div key={ride.id} className="border-b pb-2 mb-2">
               <p className="font-semibold">
-                {ride.from} → {ride.to}
+                {ride.pickup_location} → {ride.dropoff_location}
               </p>
               <p className="text-sm text-gray-500">
-                {new Date(ride.time).toLocaleString()}
+                {new Date(ride.created_at).toLocaleString()}
               </p>
             </div>
           ))

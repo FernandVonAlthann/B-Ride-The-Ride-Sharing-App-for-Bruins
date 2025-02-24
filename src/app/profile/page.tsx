@@ -1,3 +1,4 @@
+// src/app/profile.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -8,14 +9,19 @@ import Image from "next/image";
 
 export default function ProfilePage() {
   const router = useRouter();
-  const [user, setUser] = useState<{ name?: string; email?: string; bio?: string; profilePic?: string; preferences?: any }>({});
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    bio: "",
+    profilePic: "",
+    preferences: {},
+  });
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-    const storedProfile = JSON.parse(localStorage.getItem("userProfile") || "{}");
-    
-    // Merge user account details with profile customization
-    setUser({ ...storedUser, ...storedProfile });
+    fetch("/api/profile")
+      .then((res) => res.json())
+      .then((data) => setUser(data))
+      .catch((error) => console.error("Failed to fetch profile:", error));
   }, []);
 
   return (

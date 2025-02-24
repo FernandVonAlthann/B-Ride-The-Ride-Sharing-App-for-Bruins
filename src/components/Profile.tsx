@@ -1,15 +1,16 @@
+// src/components/Profile.tsx
 "use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 
-export default function ProfilePage() {
+export default function Profile({ userId }: { userId: string }) {
   const router = useRouter();
   const [profile, setProfile] = useState({
     name: "John Doe",
+    email: "johndoe@example.com",
     bio: "I love road trips and carpooling!",
     profilePic: "/default-avatar.png",
     preferences: {
@@ -18,12 +19,12 @@ export default function ProfilePage() {
     },
   });
 
-  // Load profile from local storage
+  // Fetch profile data from the API
   useEffect(() => {
-    const storedProfile = localStorage.getItem("userProfile");
-    if (storedProfile) {
-      setProfile(JSON.parse(storedProfile));
-    }
+    fetch("/api/profile")
+      .then((res) => res.json())
+      .then((data) => setProfile(data))
+      .catch((error) => console.error("Failed to fetch profile:", error));
   }, []);
 
   // Handle profile picture upload
@@ -51,16 +52,27 @@ export default function ProfilePage() {
     }));
   };
 
-  // Save profile to local storage
-  const saveProfile = () => {
-    localStorage.setItem("userProfile", JSON.stringify(profile));
-    alert("Profile saved!");
+  // Save profile to the database via the API
+  const saveProfile = async () => {
+    try {
+      const response = await fetch("/api/profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(profile),
+      });
+      if (response.ok) {
+        alert("Profile saved!");
+      } else {
+        console.error("Error saving profile");
+      }
+    } catch (error) {
+      console.error("Error saving profile", error);
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
       <h1 className="text-3xl font-bold mb-4">Edit Your Profile</h1>
-
       <div className="bg-white p-6 rounded-lg shadow-md w-[400px] text-center">
         {/* Profile Picture */}
         <div className="relative w-32 h-32 mx-auto mb-4">
@@ -124,21 +136,24 @@ export default function ProfilePage() {
         </select>
 
         {/* Save Button */}
-        <button onClick={saveProfile} className="bg-blue-500 text-white px-4 py-2 rounded w-full mt-4">
+        <button
+          onClick={saveProfile}
+          className="bg-blue-500 text-white px-4 py-2 rounded w-full mt-4"
+        >
           Save Changes
         </button>
-	<Button
-        className="mt-6 bg-gray-500 hover:bg-gray-600 text-white"
-        onClick={() => router.push("/dashboard")}
-      >
-        Back to Dashboard
-      </Button>
-      <Button
-        className="mt-6 bg-gray-500 hover:bg-gray-600 text-white"
-        onClick={() => router.push("/profile")}
-      >
-        Back
-      </Button>
+        <Button
+          className="mt-6 bg-gray-500 hover:bg-gray-600 text-white"
+          onClick={() => router.push("/dashboard")}
+        >
+          Back to Dashboard
+        </Button>
+        <Button
+          className="mt-6 bg-gray-500 hover:bg-gray-600 text-white"
+          onClick={() => router.push("/profile")}
+        >
+          Back
+        </Button>
       </div>
     </div>
   );

@@ -6,28 +6,77 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
+interface SavedLocation {
+  id: number;
+  location_name: string;
+  created_at: string;
+}
+
 export default function SavedLocations() {
   const router = useRouter();
-  const [locations, setLocations] = useState<string[]>([]);
+  const [locations, setLocations] = useState<SavedLocation[]>([]);
   const [newLocation, setNewLocation] = useState("");
 
   useEffect(() => {
-    const storedLocations = JSON.parse(localStorage.getItem("savedLocations") || "[]");
-    setLocations(storedLocations);
+    fetchLocations();
   }, []);
 
-  const addLocation = () => {
-    if (newLocation.trim() === "") return;
-    const updatedLocations = [...locations, newLocation];
-    setLocations(updatedLocations);
-    localStorage.setItem("savedLocations", JSON.stringify(updatedLocations));
-    setNewLocation("");
+  const fetchLocations = async () => {
+    try {
+      const res = await fetch("/api/saved-locations");
+      if (res.ok) {
+        const data = await res.json();
+        setLocations(data);
+      } else {
+        console.error("Failed to fetch saved locations");
+      }
+    } catch (error) {
+      console.error("Error fetching saved locations:", error);
+    }
   };
 
-  const removeLocation = (index: number) => {
-    const updatedLocations = locations.filter((_, i) => i !== index);
-    setLocations(updatedLocations);
-    localStorage.setItem("savedLocations", JSON.stringify(updatedLocations));
+  const addLocation = async () => {
+    if (newLocation.trim() === "") return;
+    // Using a dummy user_id; replace with the actual user's id if available
+    const locationPayload = {
+      user_id: 1,
+      location_name: newLocation.trim(),
+    };
+
+    try {
+      const res = await fetch("/api/saved-locations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(locationPayload),
+      });
+      if (res.ok) {
+        const savedLocation = await res.json();
+        // Add the new location at the beginning of the list
+        setLocations([savedLocation, ...locations]);
+        setNewLocation("");
+      } else {
+        console.error("Failed to add location");
+      }
+    } catch (error) {
+      console.error("Error adding location:", error);
+    }
+  };
+
+  const removeLocation = async (id: number) => {
+    try {
+      const res = await fetch(`/api/saved-locations/${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setLocations(locations.filter((loc) => loc.id !== id));
+      } else {
+        console.error("Failed to remove location");
+      }
+    } catch (error) {
+      console.error("Error removing location:", error);
+    }
   };
 
   return (
@@ -50,10 +99,13 @@ export default function SavedLocations() {
             </Button>
             <div className="mt-4 space-y-2">
               {locations.length > 0 ? (
-                locations.map((loc, index) => (
-                  <div key={index} className="flex justify-between items-center bg-gray-200 p-2 rounded">
-                    <span>{loc}</span>
-                    <Button className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 text-sm" onClick={() => removeLocation(index)}>
+                locations.map((loc) => (
+                  <div key={loc.id} className="flex justify-between items-center bg-gray-200 p-2 rounded">
+                    <span>{loc.location_name}</span>
+                    <Button
+                      className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 text-sm"
+                      onClick={() => removeLocation(loc.id)}
+                    >
                       Remove
                     </Button>
                   </div>

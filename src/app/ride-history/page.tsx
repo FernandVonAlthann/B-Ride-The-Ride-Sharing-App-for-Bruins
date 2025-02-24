@@ -16,8 +16,20 @@ export default function RideHistory() {
   const [rideHistory, setRideHistory] = useState<Ride[]>([]);
 
   useEffect(() => {
-    const storedHistory = JSON.parse(localStorage.getItem("rideHistory") || "[]");
-    setRideHistory(storedHistory);
+    const fetchRideHistory = async () => {
+      try {
+        const res = await fetch('/api/ride-history');
+        if (!res.ok) {
+          throw new Error("Failed to fetch ride history");
+        }
+        const data = await res.json();
+        setRideHistory(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchRideHistory();
   }, []);
 
   return (
@@ -32,7 +44,9 @@ export default function RideHistory() {
             {rideHistory.length > 0 ? (
               rideHistory.map((ride, index) => (
                 <div key={index} className="border-b pb-2">
-                  <p className="text-lg font-semibold">{ride.from} → {ride.to}</p>
+                  <p className="text-lg font-semibold">
+                    {ride.from} → {ride.to}
+                  </p>
                   <p className="text-sm text-gray-500">
                     {new Date(ride.time).toLocaleString()}
                   </p>

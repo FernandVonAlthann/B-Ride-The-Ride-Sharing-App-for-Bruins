@@ -7,27 +7,69 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
 interface Review {
-  user: string;
+  id: number;
+  ride_id: number;
+  reviewer_id: number;
+  reviewee_id: number;
   rating: number;
-  comment: string;
+  review: string;
+  created_at: string;
 }
 
 export default function RatingsReviews() {
-const router = useRouter();
+  const router = useRouter();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [newReview, setNewReview] = useState({ rating: 5, comment: "" });
 
   useEffect(() => {
-    const storedReviews = JSON.parse(localStorage.getItem("reviews") || "[]");
-    setReviews(storedReviews);
+    fetchReviews();
   }, []);
 
-  const submitReview = () => {
+  const fetchReviews = async () => {
+    try {
+      const res = await fetch("/api/reviews");
+      if (res.ok) {
+        const data = await res.json();
+        setReviews(data);
+      } else {
+        console.error("Failed to fetch reviews");
+      }
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    }
+  };
+
+  const submitReview = async () => {
     if (!newReview.comment) return alert("Please enter a comment");
-    const updatedReviews = [...reviews, { user: "You", ...newReview }];
-    setReviews(updatedReviews);
-    localStorage.setItem("reviews", JSON.stringify(updatedReviews));
-    setNewReview({ rating: 5, comment: "" });
+
+    // Replace these with actual IDs from your application's context
+    const reviewPayload = {
+      ride_id: 1,
+      reviewer_id: 1,
+      reviewee_id: 2,
+      rating: newReview.rating,
+      review: newReview.comment,
+    };
+
+    try {
+      const res = await fetch("/api/reviews", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reviewPayload),
+      });
+
+      if (res.ok) {
+        const savedReview = await res.json();
+        setReviews([...reviews, savedReview]);
+        setNewReview({ rating: 5, comment: "" });
+      } else {
+        console.error("Failed to submit review");
+      }
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    }
   };
 
   return (
@@ -39,11 +81,11 @@ const router = useRouter();
         <CardContent>
           <div className="space-y-4">
             {reviews.length > 0 ? (
-              reviews.map((review, index) => (
-                <div key={index} className="border-b pb-2">
-                  <p className="text-lg font-semibold">{review.user}</p>
+              reviews.map((review) => (
+                <div key={review.id} className="border-b pb-2">
+                  <p className="text-lg font-semibold">User {review.reviewer_id}</p>
                   <p className="text-sm text-yellow-500">⭐ {review.rating}/5</p>
-                  <p className="text-gray-600">{review.comment}</p>
+                  <p className="text-gray-600">{review.review}</p>
                 </div>
               ))
             ) : (
@@ -53,24 +95,38 @@ const router = useRouter();
               <label className="block mb-1 text-lg">Leave a Review</label>
               <select
                 value={newReview.rating}
-                onChange={(e) => setNewReview({ ...newReview, rating: Number(e.target.value) })}
+                onChange={(e) =>
+                  setNewReview({ ...newReview, rating: Number(e.target.value) })
+                }
                 className="mb-2 w-full p-2 border rounded"
               >
                 {[5, 4, 3, 2, 1].map((num) => (
-                  <option key={num} value={num}>{num} Stars</option>
+                  <option key={num} value={num}>
+                    {num} Stars
+                  </option>
                 ))}
               </select>
               <Textarea
                 placeholder="Write your review..."
                 value={newReview.comment}
-                onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                onChange={(e) =>
+                  setNewReview({ ...newReview, comment: e.target.value })
+                }
               />
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-2" onClick={submitReview}>Submit Review</Button>
+              <Button
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white mt-2"
+                onClick={submitReview}
+              >
+                Submit Review
+              </Button>
             </div>
           </div>
         </CardContent>
       </Card>
-      <Button className="mt-6 bg-gray-500 hover:bg-gray-600 text-white" onClick={() => router.push("/dashboard")}>
+      <Button
+        className="mt-6 bg-gray-500 hover:bg-gray-600 text-white"
+        onClick={() => router.push("/dashboard")}
+      >
         Back to Dashboard
       </Button>
     </div>

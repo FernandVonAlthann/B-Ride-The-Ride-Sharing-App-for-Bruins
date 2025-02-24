@@ -10,14 +10,36 @@ export default function LanguageSelection() {
   const [language, setLanguage] = useState("en");
 
   useEffect(() => {
-    const storedLang = localStorage.getItem("language") || "en";
-    setLanguage(storedLang);
+    // Fetch the stored language from the API on component mount.
+    const fetchLanguage = async () => {
+      try {
+        const res = await fetch("/api/language", { cache: "no-store" });
+        if (!res.ok) throw new Error("Failed to fetch language preference");
+        const data = await res.json();
+        setLanguage(data.language || "en");
+      } catch (error) {
+        console.error("Error fetching language:", error);
+      }
+    };
+
+    fetchLanguage();
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setLanguage(e.target.value);
-    localStorage.setItem("language", e.target.value);
-    alert(`Language changed to ${e.target.value}`);
+  const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLanguage = e.target.value;
+    setLanguage(newLanguage);
+    try {
+      const res = await fetch("/api/language", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language: newLanguage }),
+      });
+      if (!res.ok) throw new Error("Failed to update language preference");
+      alert(`Language changed to ${newLanguage}`);
+    } catch (error) {
+      console.error("Error updating language:", error);
+      alert("Error updating language preference");
+    }
   };
 
   return (
