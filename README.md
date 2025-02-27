@@ -113,67 +113,52 @@ signup
 
 # Backend
 
-/src/app/layout.tsx
+/src/app/
 
-/src/app/ThemeProvider.tsx
+layout.tsx,
+ThemeProvider.tsx,
+auth.ts,
+signup.ts,
+locations.ts,
+splitFare.ts,
+emergency-contact,
+group-chat,
+language,
+threads,
+messages,
+profile,
+profile.ts,
+reviews,
+ride-history,
+rides,
+saved-locations
 
-/src/app/api/auth.ts
+/src/components/auth/
 
-/src/app/api/signup.ts
+Login.tsx,
+Signup.tsx
 
-/src/app/api/locations.ts
+/src/components/
 
-/src/app/api/splitFare.ts
+FareSplit.tsx,
+Map.tsx,
+Profile.tsx,
+RideETA.tsx,
+RideList.tsx
 
-/src/app/api/emergency-contact
+/src/components/ui/
 
-/src/app/api/group-chat
-
-/src/app/api/language
-
-/src/app/api/threads
-
-/src/app/api/messages
-
-/src/app/api/profile
-
-/src/app/api/profile.ts
-
-/src/app/api/reviews
-
-/src/app/api/ride-history
-
-/src/app/api/rides
-
-/src/app/api/saved-locations
-
-/src/components/auth/Login.tsx
-
-/src/components/auth/Signup.tsx
-
-/src/components/FareSplit.tsx
-
-/src/components/Map.tsx
-
-/src/components/Profile.tsx
-
-/src/components/RideETA.tsx
-
-/src/components/RideList.tsx
-
-/src/components/ui/button.tsx
-
-/src/components/ui/card.tsx
-
-/src/components/ui/input.tsx
-
-/src/components/ui/textarea.tsx
+button.tsx,
+card.tsx,
+input.tsx,
+textarea.tsx
 
 /src/lib/db.ts
 
-/backend/server/index.js
+/backend/server/
 
-/backend/server/database.sql
+index.js,
+database.sql
 
 # Frontend
 
