@@ -13,9 +13,13 @@ B-Ride-The-Ride-Sharing-App-for-Bruins
 # Group members
 
 Fernando-Anscar Althann,
+
 Terry Lee,
+
 Ani Torosyan,
+
 Neil Pal,
+
 Karol Barroso
 
 # Project Overview
@@ -86,6 +90,8 @@ npm run dev
 
 # Components
 
+/src/app/
+
 AI-Chat-Assistant,
 dark-mode,
 dashboard,
@@ -117,6 +123,9 @@ signup
 
 layout.tsx,
 ThemeProvider.tsx,
+
+/src/app/api/
+
 auth.ts,
 signup.ts,
 locations.ts,
