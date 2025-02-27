@@ -86,54 +86,29 @@ npm run dev
 
 # Components
 
-AI-Chat-Assistant
-
-dark-mode
-
-dashboard
-
-emergency-contact
-
-faresplit
-
-find-ride
-
-forum
-
-group-chat
-
-language
-
-login
-
-map
-
-map
-
-messages
-
-offer-ride
-
-payment
-
-profile
-
-profileapp
-
-Ratings-Reviews
-
-referral
-
-referral-redeem
-
-ride-cost
-
-ride-history
-
-ride-matching
-
-saved-locations
-
+AI-Chat-Assistant,
+dark-mode,
+dashboard,
+emergency-contact,
+faresplit,
+find-ride,
+forum,
+group-chat,
+language,
+login,
+map,
+messages,
+offer-ride,
+payment,
+profile,
+profileapp,
+Ratings-Reviews,
+referral,
+referral-redeem,
+ride-cost,
+ride-history,
+ride-matching,
+saved-locations,
 signup
 
 # Backend
@@ -172,7 +147,27 @@ signup
 
 /src/app/api/saved-locations
 
-/src/components/...
+/src/components/auth/Login.tsx
+
+/src/components/auth/Signup.tsx
+
+/src/components/FareSplit.tsx
+
+/src/components/Map.tsx
+
+/src/components/Profile.tsx
+
+/src/components/RideETA.tsx
+
+/src/components/RideList.tsx
+
+/src/components/ui/button.tsx
+
+/src/components/ui/card.tsx
+
+/src/components/ui/input.tsx
+
+/src/components/ui/textarea.tsx
 
 /src/lib/db.ts
 
