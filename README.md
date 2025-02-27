@@ -77,7 +77,61 @@ npm run dev
 
 # Components
 
+AI-Chat-Assistant
+
+dark-mode
+
+dashboard
+
+emergency-contact
+
+faresplit
+
+find-ride
+
+forum
+
+group-chat
+
+language
+
+login
+
+map
+
+map
+
+messages
+
+offer-ride
+
+payment
+
+profile
+
+profileapp
+
+Ratings-Reviews
+
+referral
+
+referral-redeem
+
+ride-cost
+
+ride-history
+
+ride-matching
+
+saved-locations
+
+signup
+
 # Backend
+
+/src/app/layout.tsx
+
+/src/app/ThemeProvider.tsx
 
 /src/app/api/auth.ts
 
@@ -85,8 +139,38 @@ npm run dev
 
 /src/app/api/locations.ts
 
+/src/app/api/splitFare.ts
+
+/src/app/api/emergency-contact
+
+/src/app/api/group-chat
+
+/src/app/api/language
+
+/src/app/api/threads
+
+/src/app/api/messages
+
+/src/app/api/profile
+
+/src/app/api/profile.ts
+
+/src/app/api/reviews
+
+/src/app/api/ride-history
+
+/src/app/api/rides
+
+/src/app/api/saved-locations
+
+/src/components/...
+
+/src/lib/db.ts
+
 /backend/server/index.js
+
+/backend/server/database.sql
 
 # Frontend
 
-The frontend of the application is built using React.
+/src/app/globals.css
