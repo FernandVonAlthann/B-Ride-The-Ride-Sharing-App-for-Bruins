@@ -12,8 +12,11 @@ B-Ride-The-Ride-Sharing-App-for-Bruins
 
 # Group members
 
-Karol Barroso, Fernando-Anscar Althann, Terry Lee, Ani Torosyan,
-Neil Pal
+Fernando-Anscar Althann,
+Terry Lee,
+Ani Torosyan,
+Neil Pal,
+Karol Barroso
 
 # Project Overview
 
@@ -66,13 +69,19 @@ npm install leaflet
 npm install bcrypt dotenv jsonwebtoken
 npm install pg
 ```
-
-4. Run the application
+3. In another terminal, initiate the database connection to server
+```
+cd B-Ride-The-Ride-Sharing-App-for-Bruins/backend/server
+```
+```
+node index.js
+```
+6. Open [http://localhost:5001](http://localhost:5001) with your browser to see the result.
+7. Run the application
 ```
 npm run dev
 ```
-
-5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+8. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 
 # Components
