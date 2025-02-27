@@ -90,7 +90,7 @@ npm run dev
 
 # Components
 
-##/src/app/
+## /src/app/
 
 AI-Chat-Assistant,
 dark-mode,
@@ -119,12 +119,12 @@ signup
 
 # Backend
 
-##/src/app/
+## /src/app/
 
 layout.tsx,
 ThemeProvider.tsx
 
-##/src/app/api/
+## /src/app/api/
 
 auth.ts,
 signup.ts,
@@ -142,12 +142,12 @@ ride-history,
 rides,
 saved-locations
 
-##/src/components/auth/
+## /src/components/auth/
 
 Login.tsx,
 Signup.tsx
 
-##/src/components/
+## /src/components/
 
 FareSplit.tsx,
 Map.tsx,
@@ -155,7 +155,7 @@ Profile.tsx,
 RideETA.tsx,
 RideList.tsx
 
-##/src/components/ui/
+## /src/components/ui/
 
 button.tsx,
 card.tsx,
