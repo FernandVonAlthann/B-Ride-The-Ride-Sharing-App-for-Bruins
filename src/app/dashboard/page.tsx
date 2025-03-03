@@ -40,37 +40,12 @@ export default function Dashboard() {
     setRides(updatedRides); // Update state
   };
 
-  const handleLogout = async() => {  // Delete User
-    try
-    {
-      const res = await fetch(`http://localhost:5001/users/delete/${user.id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-       });
-
-       const deletedUser = await res.json();
-
-       alert("User deleted successfully!");
-      router.push("/");
-      
-       if(!res.ok)
-       {
-        throw new Error(deletedUser.error);
-       }  
-    }
-    catch(err)
-    {
-      alert(err.message);
-    }
+  const handleLogout = () => {
+    localStorage.removeItem("user");
     router.push("/");
   };
-  
-  const handleSafeLogout = () => {  // Basic Logout
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    alert("Logged out successfully!");
+
+  const handleSafeLogout = () => {
     router.push("/");
   };
 
@@ -91,113 +66,106 @@ export default function Dashboard() {
       alert("Geolocation is not supported by this browser.");
     }
   };
-  
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6">
-      <h1 className="text-4xl font-bold mb-2">Welcome, {user.name || "Bruin"}! 🚗</h1>
-      <p className="text-lg mb-6">Ready to ride?</p>
 
-      {/* Quick Action Buttons */}
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        <Button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 text-lg" onClick={() => router.push("/find-ride")}>
-          Find a Ride
-        </Button>
-        <Button className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 text-lg" onClick={() => router.push("/offer-ride")}>
-          Offer a Ride
-        </Button>
-        <Button className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 text-lg" onClick={() => router.push("/forum")}>
-          Forum
-        </Button>
-        <Button className="bg-indigo-500 hover:bg-indigo-600 text-white px-6 py-2 text-lg" onClick={() => router.push("/messages")}>
-          Direct Messages
-        </Button>
-        <Button className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 text-lg col-span-2" onClick={() => router.push("map")}>
-          View Map
-        </Button>
-	<Button className="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 text-lg col-span-2" onClick={() => router.push("AI-Chat-Assistant")}>
-          Chat With An Assistant
-        </Button>
-	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/profile")}>
-  	  View My Profile
-        </Button>
-	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/ride-history")}>
-  	  View My Ride History
-        </Button>
-	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/saved-locations")}>
-  	  View My Saved Locations
-        </Button>
-	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/Ratings-Reviews")}>
-  	  Ratings and Reviews
-        </Button>
-	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/ride-matching")}>
-  	  Live Matchmaking
-        </Button>
-	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/group-chat")}>
-  	  Group Chat
-        </Button>
-	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/ride-cost")}>
-  	  Estimate Cost
-        </Button>
-	<Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/payment")}>
-  	  Payment
-        </Button>
+  return (
+    <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6">
+      {/* Welcome Section */}
+      <div className="text-center mb-10">
+        <h1 className="text-5xl font-bold mb-4">Welcome, {user.name || "Bruin"}! 🚗</h1>
+        <p className="text-2xl">Ready to ride?</p>
       </div>
 
-      {/* Upcoming Rides Section */}
-      <Card className="w-full max-w-lg bg-white text-gray-800 shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-center text-2xl">Upcoming Rides</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {rides.length > 0 ? (
-              rides.map((ride, index) => (
-                <div key={index} className="border-b pb-2 flex justify-between items-center">
-                  <div>
-                    <p className="text-lg font-semibold">{ride.from} → {ride.to}</p>
-                    <p className="text-sm text-gray-500">{new Date(ride.time).toLocaleString()}</p>
-                  </div>
-                  <Button className="bg-red-500 hover:bg-red-600 text-white px-4 py-1 text-sm" onClick={() => deleteRide(index)}>
-                    Delete
-                  </Button>
-                </div>
-              ))
-            ) : (
-              <p className="text-center text-gray-500">No upcoming rides</p>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+      {/* Grid Layout for Panels */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {/* Quick Actions Panel */}
+        <Card className="bg-white text-gray-800 shadow-lg rounded-lg">
+          <CardHeader>
+            <CardTitle className="text-center text-2xl">Quick Actions</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <Button className="w-full bg-green-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/find-ride")}>
+              Find a Ride
+            </Button>
+            <Button className="w-full bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/offer-ride")}>
+              Offer a Ride
+            </Button>
+            <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/forum")}>
+              Forum
+            </Button>
+            <Button className="w-full bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/messages")}>
+              Direct Messages
+            </Button>
+          </CardContent>
+        </Card>
 
-       {/* GPS Button */}
-      <Button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 text-lg mb-4" onClick={getLocation}>
-        Get Location
-      </Button>
-      {location && (
-        <p className="text-lg mb-4">Latitude: {location.lat}, Longitude: {location.lon}</p>
-      )}
-      <Button className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/emergency-contact")}>
-        🚨 Emergency Contact
-      </Button>
-      <Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/dark-mode")}>
-  	Enable Dark Mode
-      </Button>
-      <Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/referral")}>
-  	  Refer A Friend
-      </Button>
-      <Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/referral-redeem")}>
-  	  Input Referral Code
-      </Button>
-      <Button className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-2 text-lg mb-4" onClick={() => router.push("/language")}>
-  	  Language
-      </Button>
-      {/* Sign out Button */}
-      <Button className="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-2 text-lg" onClick={handleLogout}>
-        Delete Account In As Fast As A Single Click
-      </Button>
-      <Button className="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-2 text-lg" onClick={handleSafeLogout}>
-        Logout to Landing
-      </Button>
+        {/* Upcoming Rides Panel */}
+        <Card className="bg-white text-gray-800 shadow-lg rounded-lg">
+          <CardHeader>
+            <CardTitle className="text-center text-2xl">Upcoming Rides</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              {rides.length > 0 ? (
+                rides.map((ride, index) => (
+                  <div key={index} className="border-b pb-4 flex justify-between items-center">
+                    <div>
+                      <p className="text-xl font-semibold">{ride.from} → {ride.to}</p>
+                      <p className="text-base text-gray-500">{new Date(ride.time).toLocaleString()}</p>
+                    </div>
+                    <Button className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 text-base rounded-lg" onClick={() => deleteRide(index)}>
+                      Delete
+                    </Button>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center text-gray-500 text-xl">No upcoming rides</p>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* GPS Panel */}
+        <Card className="bg-white text-gray-800 shadow-lg rounded-lg">
+          <CardHeader>
+            <CardTitle className="text-center text-2xl">Location</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <Button className="w-full bg-green-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={getLocation}>
+              Get Location
+            </Button>
+            {location && (
+              <p className="text-center text-xl">Latitude: {location.lat}, Longitude: {location.lon}</p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Emergency Contact Panel */}
+        <Card className="bg-white text-gray-800 shadow-lg rounded-lg">
+          <CardHeader>
+            <CardTitle className="text-center text-2xl">Emergency</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Button className="w-full bg-red-600 hover:bg-red-700 text-white rounded-lg text-lg py-3" onClick={() => router.push("/emergency-contact")}>
+              🚨 Emergency Contact
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Logout Panel */}
+        <Card className="bg-white text-gray-800 shadow-lg rounded-lg">
+          <CardHeader>
+            <CardTitle className="text-center text-2xl">Account</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <Button className="w-full bg-red-600 hover:bg-red-700 text-white rounded-lg text-lg py-3" onClick={handleLogout}>
+              Delete Account
+            </Button>
+            <Button className="w-full bg-red-600 hover:bg-red-700 text-white rounded-lg text-lg py-3" onClick={handleSafeLogout}>
+              Logout to Landing
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
