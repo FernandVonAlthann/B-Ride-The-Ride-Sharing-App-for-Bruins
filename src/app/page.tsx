@@ -1,85 +1,139 @@
-"use client";
+// "use client";
 
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+// import { Button } from "@/components/ui/button";
+// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+// import { useEffect, useState } from "react";
+// import Image from "next/image";
 
-export default function LandingPage() {
-  const router = useRouter();
+// interface Ride {
+//   from: string;
+//   to: string;
+//   time: string;
+// }
 
-  // Navigation handlers
-  const handleLogin = () => router.push("/login");
-  const handleSignup = () => router.push("/signup");
+// export default function Dashboard() {
+//   const router = useRouter();
+//   const [user, setUser] = useState<{ name?: string; profilePic?: string; email?: string }>({});
+//   const [rides, setRides] = useState<Ride[]>([]);
 
-  return (
-    <main className="relative min-h-screen bg-gradient-to-br from-[#4D9FFF] to-[#020B3B] text-white">
-      {/* Header / Nav */}
-      <header className="fixed top-0 left-0 right-0 z-10 flex justify-center px-6 py-4">
-        <div className="w-full max-w-7xl flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Image
-              src="/logo.png"
-              alt="B-Ride Logo"
-              width={32}
-              height={32}
-              className="rounded-xl"
-            />
-            <span className="text-xl font-bold text-white">B-Ride</span>
-          </div>
-          <button
-            onClick={handleLogin}
-            className="bg-white hover:bg-gray-100 text-black px-4 py-2 rounded-full text-sm font-medium transition"
-          >
-            Login
-          </button>
-        </div>
-      </header>
+//   useEffect(() => {
+//     // Retrieve user info
+//     const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+//     setUser(storedUser);
 
-      {/* Main Content */}
-      <div className="min-h-screen px-6 flex flex-col justify-start pt-24">
-        <div className="w-full max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center justify-between gap-12">
-          {/* Text Content */}
-          <div className="lg:w-5/12 flex flex-col items-center lg:items-start text-center lg:text-left">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight">
-              Hit the Road<br />Share the Cost<br />Make Friends
-            </h1>
-            <p className="mt-6 text-lg lg:text-xl text-gray-200 leading-relaxed max-w-lg">
-              B-Ride connects you with fellow students for safe, affordable, and fun campus commutes. Join now and enjoy stress-free travel—together!
-            </p>
-          </div>
+//     // Retrieve and sort rides
+//     loadRides();
+//   }, []);
 
-          {/* Hero Image */}
-          <div className="lg:w-7/12 mb-8 lg:mb-0">
-            <div className="relative w-full">
-              <Image
-                src="/hero-image.png"
-                alt="B-Ride Hero Illustration"
-                width={640}
-                height={640}
-                className="rounded-2xl"
-                priority
-              />
-            </div>
-          </div>
-        </div>
+//   const loadRides = () => {
+//     const storedRides = JSON.parse(localStorage.getItem("rides") || "[]");
+//     const sortedRides = storedRides.sort((a: Ride, b: Ride) => new Date(a.time).getTime() - new Date(b.time).getTime());
+//     setRides(sortedRides);
+//   };
 
-        {/* Bottom Buttons */}
-        <div className="w-full max-w-md mx-auto mt-8 lg:mt-12 mb-8 px-6">
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <button
-              onClick={handleSignup}
-              className="w-full bg-white hover:bg-gray-100 text-black px-8 py-3 rounded-full text-lg font-semibold transition"
-            >
-              Sign Up
-            </button>
-            <button
-              onClick={handleLogin}
-              className="w-full bg-gradient-to-r from-[#172554] via-[#1E3A8A] to-[#2563eb] hover:opacity-90 text-white border-0 px-8 py-3 rounded-full text-lg font-semibold transition"
-            >
-              Log In
-            </button>
-          </div>
-        </div>
-      </div>
-    </main>
-  );
-}
+//   return (
+//     <div className="flex min-h-screen bg-gradient-to-br from-[#4D9FFF] to-[#020B3B] text-white">
+//       {/* Sidebar */}
+//       <aside className="w-72 bg-white text-gray-900 shadow-2xl flex flex-col items-center p-8 rounded-r-3xl">
+//         {/* Profile Picture */}
+//         <Image
+//           src={user.profilePic || "/default-avatar.png"}
+//           alt="Profile Picture"
+//           width={90}
+//           height={90}
+//           className="rounded-full border-4 border-gray-300 shadow-lg"
+//         />
+//         <h2 className="text-xl font-bold mt-3">{user.name || "User"}</h2>
+//         <p className="text-sm text-gray-500">{user.email || "No email"}</p>
+
+//         {/* Sidebar Navigation */}
+//         <nav className="mt-6 w-full space-y-3">
+//           <Button className="w-full bg-gradient-to-r from-[#172554] via-[#1E3A8A] to-[#2563eb] hover:opacity-90 text-white shadow-lg rounded-full" onClick={() => router.push("/profile")}>
+//             View Profile
+//           </Button>
+//           <Button className="w-full bg-gradient-to-r from-[#4D9FFF] to-[#1E3A8A] hover:opacity-90 text-white shadow-lg rounded-full" onClick={() => router.push("/ride-history")}>
+//             Ride History
+//           </Button>
+//           <Button className="w-full bg-gradient-to-r from-[#FFC107] to-[#FFDC5F] hover:opacity-90 text-black shadow-lg rounded-full" onClick={() => router.push("/settings")}>
+//             Settings
+//           </Button>
+//           <Button className="w-full bg-red-500 hover:bg-red-600 text-white shadow-lg rounded-full" onClick={() => router.push("/emergency-contact")}>
+//             🚨 Emergency Contact
+//           </Button>
+//           <Button className="w-full bg-red-600 hover:bg-red-700 text-white shadow-lg rounded-full" onClick={() => router.push("/logout")}>
+//             Logout
+//           </Button>
+//         </nav>
+//       </aside>
+
+//       {/* Main Content */}
+//       <div className="flex-1 p-10">
+//         {/* Header */}
+//         <div className="flex items-center justify-between">
+//           <h1 className="text-5xl font-extrabold">Welcome, {user.name || "Bruin"}! 🚗</h1>
+//         </div>
+//         <p className="text-lg text-gray-200 mt-2">Ready to ride?</p>
+
+//         {/* Quick Action Buttons */}
+//         <div className="grid grid-cols-2 gap-6 mt-8">
+//           <Button className="bg-[#FFDC5F] hover:bg-[#FFC107] text-black text-lg font-semibold shadow-xl rounded-full" onClick={() => router.push("/find-ride")}>
+//             Find a Ride
+//           </Button>
+//           <Button className="bg-[#2563eb] hover:bg-[#1E3A8A] text-white text-lg font-semibold shadow-xl rounded-full" onClick={() => router.push("/offer-ride")}>
+//             Offer a Ride
+//           </Button>
+//           <Button className="bg-[#4D9FFF] hover:bg-[#2563eb] text-white text-lg font-semibold shadow-xl rounded-full" onClick={() => router.push("/forum")}>
+//             Forum
+//           </Button>
+//           <Button className="bg-[#FFDC5F] hover:bg-[#FFC107] text-black text-lg font-semibold shadow-xl rounded-full" onClick={() => router.push("/messages")}>
+//             Direct Messages
+//           </Button>
+//           <Button className="col-span-2 bg-[#172554] hover:bg-[#1E3A8A] text-white text-lg font-semibold shadow-xl rounded-full" onClick={() => router.push("/map")}>
+//             View Map
+//           </Button>
+//           <Button className="col-span-2 bg-[#1E3A8A] hover:bg-[#2563eb] text-white text-lg font-semibold shadow-xl rounded-full" onClick={() => router.push("/AI-Chat-Assistant")}>
+//             Chat With An Assistant
+//           </Button>
+//         </div>
+
+//         {/* Upcoming Rides Section */}
+//         <Card className="w-full max-w-2xl bg-white text-gray-800 shadow-lg mt-10 rounded-3xl">
+//           <CardHeader>
+//             <CardTitle className="text-center text-2xl font-bold">Upcoming Rides</CardTitle>
+//           </CardHeader>
+//           <CardContent>
+//             {rides.length > 0 ? (
+//               rides.map((ride, index) => (
+//                 <div key={index} className="border-b pb-2 flex justify-between items-center">
+//                   <div>
+//                     <p className="text-lg font-semibold">{ride.from} → {ride.to}</p>
+//                     <p className="text-sm text-gray-500">{new Date(ride.time).toLocaleString()}</p>
+//                   </div>
+//                 </div>
+//               ))
+//             ) : (
+//               <p className="text-center text-gray-500">No upcoming rides</p>
+//             )}
+//           </CardContent>
+//         </Card>
+
+//         {/* Additional Options */}
+//         <div className="grid grid-cols-2 gap-6 mt-10">
+//           <Button className="bg-[#FFC107] hover:bg-[#FFDC5F] text-black text-lg font-semibold shadow-xl rounded-full" onClick={() => router.push("/ride-matching")}>
+//             Live Matchmaking
+//           </Button>
+//           <Button className="bg-[#2563eb] hover:bg-[#1E3A8A] text-white text-lg font-semibold shadow-xl rounded-full" onClick={() => router.push("/group-chat")}>
+//             Group Chat
+//           </Button>
+//           <Button className="bg-[#FFDC5F] hover:bg-[#FFC107] text-black text-lg font-semibold shadow-xl rounded-full" onClick={() => router.push("/ride-cost")}>
+//             Estimate Cost
+//           </Button>
+//           <Button className="bg-[#2563eb] hover:bg-[#1E3A8A] text-white text-lg font-semibold shadow-xl rounded-full" onClick={() => router.push("/payment")}>
+//             Payment
+//           </Button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }

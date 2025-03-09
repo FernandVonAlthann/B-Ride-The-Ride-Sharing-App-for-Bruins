@@ -117,27 +117,33 @@ app.get("/users/id/:id",async(req,res)=>{
 // Get a specific user with email   (one result only bc user id is unique)
 // GET: http://localhost:5001/users/email/alice@example.com
 // The command above will pass alice@example.com in the email parameter in the function below
-app.get("/users/email/:email",async(req,res)=>{
-    try
-    {
-      console.log("FETCHING USER WITH EMAIL: ", req.params);
-      const {email} = req.params; 
-      const user = await pool.query("SELECT * FROM users WHERE email = $1;" , [email] );
+app.get("/users/email/:email", async (req, res) => {
+  try {
+    const { email } = req.params;
+    console.log(`Fetching user with email: '${email}'`); // ✅ Fixed Syntax
 
-      if(user.rows.length===0)
-      {
-        return res.status(404).send("User not found with the email provided");
-      }
-      
-      res.json(user.rows[0]);
-    }
-    catch(err)
-    {
-        console.error(err.message);
-        return res.status(500).send("Server Error: getting a user with email");
+    // Query the database
+    const user = await pool.query(
+      "SELECT id, name, email, bio, profile_picture, rating, rides_taken, language, ride_preference FROM users WHERE email = $1;",
+      [email.trim()] 
+    );
 
+    // Check if user exists
+    if (user.rows.length === 0) {
+      console.log("❌ User not found in database.");
+      return res.status(404).json({ error: "User not found." });
     }
-})
+
+    console.log("User found:", user.rows[0]); 
+    res.json(user.rows[0]); 
+  } catch (err) {
+    console.error("❌ Database Error:", err);
+    res.status(500).json({ error: "Server Error: fetching user data." });
+  }
+});
+
+
+
 
 
 // Update password / Change password 
@@ -186,7 +192,35 @@ app.delete("/users/delete/:id",async(req,res)=>{
     console.error(err.message);
     res.status(500).send("Server Error: deleting a user");
   }
+});app.put("/users/update/:id", async (req, res) => {
+  try {
+    const userId = parseInt(req.params.id, 10); // Convert ID to number
+    if (isNaN(userId)) {
+      return res.status(400).json({ error: "Invalid user ID" });
+    }
+
+    const { name, bio, language, ride_preference } = req.body;
+    console.log(`Updating user with ID: ${userId}`, { name, bio, language, ride_preference });
+
+    const updateUser = await pool.query(
+      "UPDATE users SET name = $1, bio = $2, language = $3, ride_preference = $4 WHERE id = $5 RETURNING *",
+      [name, bio, language, ride_preference, userId]
+    );
+
+    if (updateUser.rowCount === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    console.log("Updated user:", updateUser.rows[0]);
+    res.json({ message: "Profile updated successfully", user: updateUser.rows[0] });
+  } catch (err) {
+    console.error("Server error updating profile:", err.message);
+    res.status(500).send("Server error: updating user profile");
+  }
 });
+
+
+
 
 // Login
 // POST: http://localhost:5001/users/login

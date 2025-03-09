@@ -25,7 +25,7 @@ export default function Signup() {
   // };
 
   const handleSignup = async () => {
-    let newErrors = { email: "", password: "" };
+
 
     // if (!validateEmail(email)) {
     //   newErrors.email = "Invalid email format. Please enter a valid email.";
@@ -34,23 +34,33 @@ export default function Signup() {
     // if (!validatePassword(password)) {
     //   newErrors.password = "Password must be at least 8 characters, include an uppercase letter, a number, and a special character.";
     // }
-
-    setErrors(newErrors);
-
-    if (!newErrors.email && !newErrors.password && name && email && password) {
-      const user = { name, email, password };
-      const res = await fetch("http://localhost:5001/users/add", {
+    if (!name || !email || !password) {
+      alert("Please fill in all fields.");
+      return;
+    }
+  
+    try {
+      const response = await fetch("http://localhost:5001/users/add", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(user),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, password }),
       });
-
-      alert("Account created! You can now log in.");
-      router.push("/");
-    } else {
-      alert("Please fix the errors before signing up.");
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        alert("Signup successful! Redirecting to login.");
+        router.push("/login");
+      } else {
+        alert(data.error || "Signup failed.");
+      }
+    } catch (err) {
+      alert("Error signing up. Please try again.");
     }
   };
+  
 
   return (
     <main className="relative min-h-screen bg-gradient-to-br from-[#4D9FFF] to-[#020B3B] text-white">

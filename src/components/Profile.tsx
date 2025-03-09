@@ -6,8 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 
-export default function ProfilePage() {
+interface ProfileProps {
+  // Make userId optional or required based on your needs
+  userId?: string;
+}
+
+export default function Profile({ userId }: ProfileProps) {
   const router = useRouter();
+
   const [profile, setProfile] = useState({
     name: "John Doe",
     bio: "I love road trips and carpooling!",
@@ -27,7 +33,9 @@ export default function ProfilePage() {
   }, []);
 
   // Handle profile picture upload
-  const handleProfilePicChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleProfilePicChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -124,21 +132,25 @@ export default function ProfilePage() {
         </select>
 
         {/* Save Button */}
-        <button onClick={saveProfile} className="bg-blue-500 text-white px-4 py-2 rounded w-full mt-4">
+        <button
+          onClick={saveProfile}
+          className="bg-blue-500 text-white px-4 py-2 rounded w-full mt-4"
+        >
           Save Changes
         </button>
-	<Button
-        className="mt-6 bg-gray-500 hover:bg-gray-600 text-white"
-        onClick={() => router.push("/dashboard")}
-      >
-        Back to Dashboard
-      </Button>
-      <Button
-        className="mt-6 bg-gray-500 hover:bg-gray-600 text-white"
-        onClick={() => router.push("/profile")}
-      >
-        Back
-      </Button>
+
+        <Button
+          className="mt-6 bg-gray-500 hover:bg-gray-600 text-white"
+          onClick={() => router.push("/dashboard")}
+        >
+          Back to Dashboard
+        </Button>
+        <Button
+          className="mt-6 bg-gray-500 hover:bg-gray-600 text-white"
+          onClick={() => router.push("/profile")}
+        >
+          Back
+        </Button>
       </div>
     </div>
   );
