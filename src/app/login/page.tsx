@@ -12,40 +12,38 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-
   const handleLogin = async () => {
-    if (email && password) {
-      try
-      {
-        const res = await fetch("http://localhost:5001/users/login", {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({email,password})
-        });
-
-        const currentUser = await res.json();
-        
-        if(res.ok)
-        {
-        // console.log("current user: " , currentUser.user);  //DEBUG
-        // console.log("token: " , currentUser.accessToken);  //DEBUG
-        localStorage.setItem("token" , currentUser.accessToken);
-        localStorage.setItem("user",JSON.stringify(currentUser.user));
-
+    if (!email || !password) {
+      alert("Please enter email and password.");
+      return;
+    }
+  
+    try {
+      const response = await fetch("http://localhost:5001/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        // Save user info and token
+        localStorage.setItem("token", data.accessToken);
+        localStorage.setItem("user", JSON.stringify(data.user));
+  
+        alert("Login successful! Redirecting...");
         router.push("/dashboard");
-        }else{
-          throw new Error(currentUser.error);
-        }
+      } else {
+        alert(data.error || "Login failed.");
       }
-      catch(err)
-      {
-        alert(err.message);
-      }
-     
-    } else {
-      alert("Please enter email and password");
+    } catch (err) {
+      alert("Error logging in. Please try again.");
     }
   };
+  
 
   const handleSignup = () => {
     router.push("/signup");

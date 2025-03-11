@@ -24,7 +24,7 @@ function EditProfilePage() {
         name: "",
         email: "",
         bio: "",
-        profilePic: "",
+        profilePic: "/default-avatar.png",
         preferences: {
             language: "",
             ridePreference: ""
@@ -32,22 +32,33 @@ function EditProfilePage() {
     });
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "EditProfilePage.useEffect": ()=>{
-            const userEmail = localStorage.getItem("userEmail") || "k";
+            const userEmail = localStorage.getItem("userEmail");
+            if (!userEmail) {
+                console.error("No user email found in localStorage");
+                return;
+            }
             fetch(`http://localhost:5001/users/email/${userEmail}`).then({
                 "EditProfilePage.useEffect": (res)=>res.json()
             }["EditProfilePage.useEffect"]).then({
                 "EditProfilePage.useEffect": (data)=>{
-                    setUser({
-                        id: data.id,
-                        name: data.name,
-                        email: data.email,
-                        bio: data.bio || "",
-                        profilePic: data.profile_picture || "/default-avatar.png",
-                        preferences: {
-                            language: data.language || "",
-                            ridePreference: data.ride_preference || ""
-                        }
-                    });
+                    if (data && data.id) {
+                        setUser({
+                            id: data.id,
+                            name: data.name,
+                            email: data.email,
+                            bio: data.bio || "",
+                            profilePic: data.profile_picture || "/default-avatar.png",
+                            preferences: {
+                                language: data.language || "",
+                                ridePreference: data.ride_preference || ""
+                            }
+                        });
+                        // Store correct user data in localStorage
+                        localStorage.setItem("user", JSON.stringify(data));
+                        window.dispatchEvent(new Event("storage")); // Notify all pages
+                    } else {
+                        console.error("User data not found");
+                    }
                 }
             }["EditProfilePage.useEffect"]).catch({
                 "EditProfilePage.useEffect": (error)=>console.error("Failed to fetch profile:", error)
@@ -63,20 +74,12 @@ function EditProfilePage() {
     };
     const handleSubmit = async (e)=>{
         e.preventDefault();
-        const userId = user.id;
-        if (!userId) {
-            alert("Invalid user ID");
+        if (!user.id) {
+            alert("Error: User ID is missing. Try refreshing the page.");
             return;
         }
-        console.log("Sending update request for user ID:", userId);
-        console.log("Update Data:", {
-            name: user.name,
-            bio: user.bio,
-            language: user.preferences.language,
-            ride_preference: user.preferences.ridePreference
-        });
         try {
-            const response = await fetch(`http://localhost:5001/users/update/${userId}`, {
+            const response = await fetch(`http://localhost:5001/users/update/${user.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -89,12 +92,15 @@ function EditProfilePage() {
                 })
             });
             if (!response.ok) {
-                const errorText = await response.text();
-                console.error("Server response:", errorText);
                 throw new Error("Failed to update profile");
             }
+            const updatedUser = {
+                ...user
+            };
+            localStorage.setItem("user", JSON.stringify(updatedUser));
+            window.dispatchEvent(new Event("storage")); // Update all pages
             alert("Profile updated successfully!");
-            router.push("/profile"); // Redirect to profile page
+            router.push("/profile");
         } catch (error) {
             console.error("Error updating profile:", error);
         }
@@ -108,23 +114,23 @@ function EditProfilePage() {
                     className: "bg-gradient-to-r from-[#3268B7] to-[#1A437A] h-28 rounded-t-lg"
                 }, void 0, false, {
                     fileName: "[project]/src/app/profileapp/page.tsx",
-                    lineNumber: 94,
+                    lineNumber: 99,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: "relative -top-10 flex justify-center",
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
-                        src: user.profilePic && user.profilePic !== "" ? user.profilePic : "/default-avatar.png",
+                        src: user.profilePic || "/default-avatar.png",
                         alt: "Profile",
                         className: "w-24 h-24 rounded-full border-4 border-white shadow-md"
                     }, void 0, false, {
                         fileName: "[project]/src/app/profileapp/page.tsx",
-                        lineNumber: 97,
+                        lineNumber: 102,
                         columnNumber: 11
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/profileapp/page.tsx",
-                    lineNumber: 96,
+                    lineNumber: 101,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -132,7 +138,7 @@ function EditProfilePage() {
                     children: "Edit Your Profile"
                 }, void 0, false, {
                     fileName: "[project]/src/app/profileapp/page.tsx",
-                    lineNumber: 100,
+                    lineNumber: 109,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -148,7 +154,7 @@ function EditProfilePage() {
                             placeholder: "Enter your name"
                         }, void 0, false, {
                             fileName: "[project]/src/app/profileapp/page.tsx",
-                            lineNumber: 103,
+                            lineNumber: 112,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -159,7 +165,7 @@ function EditProfilePage() {
                             placeholder: "Enter your bio"
                         }, void 0, false, {
                             fileName: "[project]/src/app/profileapp/page.tsx",
-                            lineNumber: 104,
+                            lineNumber: 120,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -177,7 +183,7 @@ function EditProfilePage() {
                             placeholder: "Preferred Language"
                         }, void 0, false, {
                             fileName: "[project]/src/app/profileapp/page.tsx",
-                            lineNumber: 105,
+                            lineNumber: 127,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -195,7 +201,7 @@ function EditProfilePage() {
                             placeholder: "Ride Preference"
                         }, void 0, false, {
                             fileName: "[project]/src/app/profileapp/page.tsx",
-                            lineNumber: 106,
+                            lineNumber: 135,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -207,8 +213,8 @@ function EditProfilePage() {
                                     children: "Save Changes"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/profileapp/page.tsx",
-                                    lineNumber: 109,
-                                    columnNumber: 3
+                                    lineNumber: 145,
+                                    columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                     type: "button",
@@ -217,34 +223,34 @@ function EditProfilePage() {
                                     children: "Back to Profile"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/profileapp/page.tsx",
-                                    lineNumber: 115,
-                                    columnNumber: 3
+                                    lineNumber: 151,
+                                    columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/profileapp/page.tsx",
-                            lineNumber: 108,
+                            lineNumber: 144,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/profileapp/page.tsx",
-                    lineNumber: 102,
+                    lineNumber: 111,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/profileapp/page.tsx",
-            lineNumber: 93,
+            lineNumber: 98,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/profileapp/page.tsx",
-        lineNumber: 92,
+        lineNumber: 97,
         columnNumber: 5
     }, this);
 }
-_s(EditProfilePage, "KxH5UcgcBH3rPeZyO1DmhtxqKpE=", false, function() {
+_s(EditProfilePage, "clNGpZPWe/5K+5U/oxavCYcpGhQ=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"]
     ];

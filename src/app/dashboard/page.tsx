@@ -14,19 +14,54 @@ interface Ride {
 
 export default function Dashboard() {
   const router = useRouter();
-  const [user, setUser] = useState<{ name?: string; profilePic?: string; email?: string }>({});
+  const [user, setUser] = useState<{ id?: string; name?: string; profilePic?: string; email?: string }>({});
   const [rides, setRides] = useState<Ride[]>([]);
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-    setUser(storedUser);
-    loadRides();
+    const fetchUserData = () => {
+      let userEmail = localStorage.getItem("userEmail") ?? ""; // Ensure it's always a string
+
+      if (!userEmail) {
+        console.warn("No user email found in localStorage. Attempting to get from 'user'...");
+        const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+
+        if (storedUser?.email) {
+          userEmail = storedUser.email;
+          localStorage.setItem("userEmail", userEmail); // Fix missing email issue
+        } else {
+          console.error("No valid user data found. Redirecting to login...");
+          router.push("/login"); // Force login if user data is missing
+          return;
+        }
+      }
+
+      fetch(`http://localhost:5001/users/email/${encodeURIComponent(userEmail)}`) // Ensure safe URL encoding
+        .then((res) => res.json())
+        .then((data) => {
+          if (data && data.id) {
+            localStorage.setItem("user", JSON.stringify(data));
+            setUser(data);
+          } else {
+            console.error("Fetched user data is invalid. Logging out...");
+            handleLogout(); // If invalid data, force logout
+          }
+        })
+        .catch((error) => console.error("Failed to fetch user:", error));
+    };
+
+    fetchUserData();
+    window.addEventListener("storage", fetchUserData);
+
+    return () => {
+      window.removeEventListener("storage", fetchUserData);
+    };
   }, []);
 
-  const loadRides = () => {
-    const storedRides = JSON.parse(localStorage.getItem("rides") || "[]");
-    const sortedRides = storedRides.sort((a: Ride, b: Ride) => new Date(a.time).getTime() - new Date(b.time).getTime());
-    setRides(sortedRides);
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("userEmail");
+    window.dispatchEvent(new Event("storage"));
+    router.push("/login");
   };
 
   return (
@@ -52,27 +87,29 @@ export default function Dashboard() {
           <Button className="w-full bg-gradient-to-r from-[#4D9FFF] to-[#1E3A8A] hover:opacity-90 text-white shadow-md rounded-full py-2 text-sm font-medium" onClick={() => router.push("/ride-history")}>
             Ride History
           </Button>
-        
         </nav>
 
-        {/* Emergency Contact & Logout (Now At Bottom) */}
-        <div className="mt-auto w-full space-y-2">
+          {/* Emergency Contact & Logout (Now At Bottom) */}
+          <div className="mt-auto w-full space-y-2">
           <Button className="w-full bg-[#FF6B6B] hover:bg-[#D2665A] text-white shadow-md rounded-full py-2 text-sm font-medium" onClick={() => router.push("/emergency-contact")}>
             🚨 Emergency Contact
           </Button>
           <Button className="w-full bg-gradient-to-r  hover:bg-[#4D9FFF] to-[#D4A017]hover:opacity-90 text-white shadow-md rounded-full py-2 text-sm font-medium" onClick={() => router.push("/settings")}>
             Settings
           </Button>
-          <Button className="w-full bg-gradient-to-r  hover:bg-[#4D9FFF] to-[#D4A017] text-white shadow-md rounded-full py-2 text-sm font-medium" onClick={() => router.push("/logout")}>
-            Logout
-          </Button>
+          <Button 
+  className="w-full bg-gradient-to-r from-[#4D9FFF] to-[#D4A017] text-white shadow-md rounded-full py-2 text-sm font-medium"
+  onClick={handleLogout}  // Call handleLogout when clicking Logout
+>
+  Logout
+</Button>
         </div>
       </aside>
 
       {/* Main Content */}
       <div className="flex-1 p-8">
         {/* Header */}
-        <h1 className="text-4xl font-bold tracking-tight">Welcome, {user.name || "Bruin"}! 🚗</h1>
+        <h1 className="text-4xl font-bold tracking-tight">Welcome, {user.name || "User"}! 🚗</h1>
         <p className="text-md text-gray-300 mt-2">Ready to ride?</p>
 
         {/* Quick Action Buttons */}

@@ -1,6 +1,13 @@
 {
   "/page": "app/page.js",
   "/login/page": "app/login/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/signup/page": "app/signup/page.js",
+  "/profileapp/page": "app/profileapp/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/signup/page": "app/signup/page.js"
+  "/map/page": "app/map/page.js",
+  "/api/locations/route": "app/api/locations/route.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/offer-ride/page": "app/offer-ride/page.js"
 }

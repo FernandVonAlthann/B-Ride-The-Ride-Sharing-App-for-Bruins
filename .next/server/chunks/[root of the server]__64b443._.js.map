@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 55, "column": 0}, "map": {"version":3,"sources":["file:///Users/karolita/Documents/GitHub/B-Ride-The-Ride-Sharing-App-for-Bruins/src/app/api/locations/route.ts"],"sourcesContent":["// app/api/locations/route.ts\nimport { NextResponse } from \"next/server\";\n\nlet userLocations: { userId: string; lat: number; lng: number }[] = [];\n\nexport async function POST(req: Request) {\n  const { userId, lat, lng } = await req.json();\n\n  // Remove old location if it exists\n  userLocations = userLocations.filter((user) => user.userId !== userId);\n\n  // Add the new location\n  userLocations.push({ userId, lat, lng });\n\n  return NextResponse.json({ success: true });\n}\n\nexport async function GET() {\n  return NextResponse.json({ locations: userLocations });\n}\n"],"names":[],"mappings":"AAAA,6BAA6B;;;;;AAC7B;;AAEA,IAAI,gBAAgE,EAAE;AAE/D,eAAe,KAAK,GAAY;IACrC,MAAM,EAAE,MAAM,EAAE,GAAG,EAAE,GAAG,EAAE,GAAG,MAAM,IAAI,IAAI;IAE3C,mCAAmC;IACnC,gBAAgB,cAAc,MAAM,CAAC,CAAC,OAAS,KAAK,MAAM,KAAK;IAE/D,uBAAuB;IACvB,cAAc,IAAI,CAAC;QAAE;QAAQ;QAAK;IAAI;IAEtC,OAAO,gIAAA,CAAA,eAAY,CAAC,IAAI,CAAC;QAAE,SAAS;IAAK;AAC3C;AAEO,eAAe;IACpB,OAAO,gIAAA,CAAA,eAAY,CAAC,IAAI,CAAC;QAAE,WAAW;IAAc;AACtD"}},
+    {"offset": {"line": 82, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
+}

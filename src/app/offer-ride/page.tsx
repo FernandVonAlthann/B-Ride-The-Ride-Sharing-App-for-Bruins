@@ -1,108 +1,142 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+type Ride = {
+  title: string;
+  from: string;
+  to: string;
+  time: string;
+  maxPassengers: number;
+  price: number;
+  description: string;
+  user: {
+    name: string;
+    profilePic: string;
+  };
+};
+
 export default function OfferRide() {
+  const [title, setTitle] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [time, setTime] = useState("");
   const [maxPassengers, setMaxPassengers] = useState("");
   const [price, setPrice] = useState("");
-  const router = useRouter();
+  const [description, setDescription] = useState("");
+  const [rides, setRides] = useState<Ride[]>([]);
+
+  useEffect(() => {
+    const storedRides: Ride[] = JSON.parse(localStorage.getItem("rides") || "[]");
+    setRides(storedRides);
+  }, []);
 
   const postRide = () => {
-    // Ensure all fields are filled before posting
-    if (
-      from.trim() &&
-      to.trim() &&
-      time.trim() &&
-      maxPassengers.trim() &&
-      price.trim()
-    ) {
-      // Create a new ride object
-      const newRide = {
+    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+    if (!storedUser.email) {
+      alert("You must be logged in to post a ride.");
+      return;
+    }
+    if (title.trim() && from.trim() && to.trim() && time.trim() && maxPassengers.trim() && price.trim()) {
+      const newRide: Ride = {
+        title,
         from,
         to,
         time,
-        maxPassengers: parseInt(maxPassengers, 10), // convert to number
-        price: parseFloat(price), // convert to number (for decimals)
+        maxPassengers: parseInt(maxPassengers, 10),
+        price: parseFloat(price),
+        description,
+        user: {
+          name: storedUser.name || "Anonymous",
+          profilePic: storedUser.profilePic || "/default-avatar.png",
+        },
       };
-
-      // Retrieve any previously saved rides and update them
-      const storedRides = JSON.parse(localStorage.getItem("rides") || "[]");
-      const updatedRides = [...storedRides, newRide];
-
-      // Save the updated rides list to localStorage
+      const updatedRides = [...rides, newRide];
+      setRides(updatedRides);
       localStorage.setItem("rides", JSON.stringify(updatedRides));
-
-      // Reset form fields
+      setTitle("");
       setFrom("");
       setTo("");
       setTime("");
       setMaxPassengers("");
       setPrice("");
-
-      // Redirect to dashboard
-      router.push("/dashboard");
+      setDescription("");
+    } else {
+      alert("Please fill in all fields.");
     }
   };
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">Offer a Ride</h1>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#4D9FFF] to-[#020B3B] p-6">
+      <div className="bg-[#F0F4F8] text-gray-900 shadow-lg rounded-lg p-8 w-full max-w-lg">
+        {/* Header */}
+        <h1 className="text-3xl font-bold text-center text-gray-900 mb-6">Offer a Ride</h1>
 
-      <Input
-        placeholder="From"
-        value={from}
-        onChange={(e) => setFrom(e.target.value)}
-      />
-      <Input
-        placeholder="To"
-        value={to}
-        onChange={(e) => setTo(e.target.value)}
-        className="mt-2"
-      />
-      <Input
-        type="datetime-local"
-        value={time}
-        onChange={(e) => setTime(e.target.value)}
-        className="mt-2"
-      />
+        {/* Ride Form */}
+        <div className="space-y-4">
+          <Input
+            placeholder="Ride Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full p-3 rounded-full bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none"
+          />
 
-      {/* New Input for Max Passengers */}
-      <Input
-        placeholder="Max Passengers"
-        type="number"
-        value={maxPassengers}
-        onChange={(e) => setMaxPassengers(e.target.value)}
-        className="mt-2"
-      />
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              placeholder="From"
+              value={from}
+              onChange={(e) => setFrom(e.target.value)}
+              className="w-full p-3 rounded-full bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none"
+            />
+            <Input
+              placeholder="To"
+              value={to}
+              onChange={(e) => setTo(e.target.value)}
+              className="w-full p-3 rounded-full bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none"
+            />
+          </div>
 
-      {/* New Input for Fixed Price */}
-      <Input
-        placeholder="Fixed Price"
-        type="number"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-        className="mt-2"
-      />
+          <Input
+            type="datetime-local"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            className="w-full p-3 rounded-full bg-white text-gray-900 border border-gray-300 focus:outline-none"
+          />
 
-      <div className="flex justify-between mt-4">
-        <Button
-          onClick={() => router.push("/dashboard")}
-          className="bg-gray-500 hover:bg-gray-600 text-white"
-        >
-          Go Back
-        </Button>
-        <Button
-          onClick={postRide}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
-        >
-          Post Ride
-        </Button>
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              placeholder="Max Passengers"
+              type="number"
+              value={maxPassengers}
+              onChange={(e) => setMaxPassengers(e.target.value)}
+              className="w-full p-3 rounded-full bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none"
+            />
+            <Input
+              placeholder="Fixed Price"
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className="w-full p-3 rounded-full bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none"
+            />
+          </div>
+
+          <textarea
+            placeholder="Description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="w-full p-3 rounded-lg bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none"
+            rows={3}
+          ></textarea>
+
+          <Button
+            className="w-full bg-[#2563EB] hover:bg-[#1E3A8A] text-white font-semibold p-3 rounded-full transition duration-300 shadow-md"
+            onClick={postRide}
+          >
+            Post Ride
+          </Button>
+        </div>
       </div>
     </div>
   );
