@@ -33,41 +33,56 @@ export default function OfferRide() {
     setRides(storedRides);
   }, []);
 
-  const postRide = () => {
+  const postRide = async () => {
     const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-    if (!storedUser.email) {
+    if (!storedUser.id) {
       alert("You must be logged in to post a ride.");
       return;
     }
-    if (title.trim() && from.trim() && to.trim() && time.trim() && maxPassengers.trim() && price.trim()) {
-      const newRide: Ride = {
-        title,
-        from,
-        to,
-        time,
-        maxPassengers: parseInt(maxPassengers, 10),
-        price: parseFloat(price),
-        description,
-        user: {
-          name: storedUser.name || "Anonymous",
-          profilePic: storedUser.profilePic || "/default-avatar.png",
-        },
-      };
-      const updatedRides = [...rides, newRide];
+  
+    if (!title || !from || !to || !time || !maxPassengers || !price) {
+      alert("Please fill in all fields.");
+      return;
+    }
+  
+    const newRide = {
+      user_id: storedUser.id,
+      title,
+      pickup_location: from,
+      dropoff_location: to,
+      time,
+      max_passengers: parseInt(maxPassengers, 10),
+      price: parseFloat(price),
+      description,
+    };
+  
+    try {
+      const response = await fetch("http://localhost:5001/rides/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newRide),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to post ride");
+      }
+  
+      const rideData = await response.json();
+  
+      // Update rides in localStorage and notify Dashboard
+      const updatedRides = [...rides, { ...rideData, user: storedUser }];
       setRides(updatedRides);
       localStorage.setItem("rides", JSON.stringify(updatedRides));
-      setTitle("");
-      setFrom("");
-      setTo("");
-      setTime("");
-      setMaxPassengers("");
-      setPrice("");
-      setDescription("");
-    } else {
-      alert("Please fill in all fields.");
+      window.dispatchEvent(new Event("storage"));
+  
+      alert("Ride posted successfully!");
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Error posting ride:", error);
+      alert("Failed to post ride.");
     }
   };
-
+  
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#4D9FFF] to-[#020B3B] p-6">
       <div className="bg-[#F0F4F8] text-gray-900 shadow-lg rounded-lg p-8 w-full max-w-lg">

@@ -89,41 +89,54 @@ function OfferRide() {
             setRides(storedRides);
         }
     }["OfferRide.useEffect"], []);
-    const postRide = ()=>{
+    const postRide = async ()=>{
         const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-        if (!storedUser.email) {
+        if (!storedUser.id) {
             alert("You must be logged in to post a ride.");
             return;
         }
-        if (title.trim() && from.trim() && to.trim() && time.trim() && maxPassengers.trim() && price.trim()) {
-            const newRide = {
-                title,
-                from,
-                to,
-                time,
-                maxPassengers: parseInt(maxPassengers, 10),
-                price: parseFloat(price),
-                description,
-                user: {
-                    name: storedUser.name || "Anonymous",
-                    profilePic: storedUser.profilePic || "/default-avatar.png"
-                }
-            };
+        if (!title || !from || !to || !time || !maxPassengers || !price) {
+            alert("Please fill in all fields.");
+            return;
+        }
+        const newRide = {
+            user_id: storedUser.id,
+            title,
+            pickup_location: from,
+            dropoff_location: to,
+            time,
+            max_passengers: parseInt(maxPassengers, 10),
+            price: parseFloat(price),
+            description
+        };
+        try {
+            const response = await fetch("http://localhost:5001/rides/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newRide)
+            });
+            if (!response.ok) {
+                throw new Error("Failed to post ride");
+            }
+            const rideData = await response.json();
+            // Update rides in localStorage and notify Dashboard
             const updatedRides = [
                 ...rides,
-                newRide
+                {
+                    ...rideData,
+                    user: storedUser
+                }
             ];
             setRides(updatedRides);
             localStorage.setItem("rides", JSON.stringify(updatedRides));
-            setTitle("");
-            setFrom("");
-            setTo("");
-            setTime("");
-            setMaxPassengers("");
-            setPrice("");
-            setDescription("");
-        } else {
-            alert("Please fill in all fields.");
+            window.dispatchEvent(new Event("storage"));
+            alert("Ride posted successfully!");
+            router.push("/dashboard");
+        } catch (error) {
+            console.error("Error posting ride:", error);
+            alert("Failed to post ride.");
         }
     };
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -136,7 +149,7 @@ function OfferRide() {
                     children: "Offer a Ride"
                 }, void 0, false, {
                     fileName: "[project]/src/app/offer-ride/page.tsx",
-                    lineNumber: 75,
+                    lineNumber: 90,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -149,7 +162,7 @@ function OfferRide() {
                             className: "w-full p-3 rounded-full bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none"
                         }, void 0, false, {
                             fileName: "[project]/src/app/offer-ride/page.tsx",
-                            lineNumber: 79,
+                            lineNumber: 94,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -162,7 +175,7 @@ function OfferRide() {
                                     className: "w-full p-3 rounded-full bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/offer-ride/page.tsx",
-                                    lineNumber: 87,
+                                    lineNumber: 102,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -172,13 +185,13 @@ function OfferRide() {
                                     className: "w-full p-3 rounded-full bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/offer-ride/page.tsx",
-                                    lineNumber: 93,
+                                    lineNumber: 108,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/offer-ride/page.tsx",
-                            lineNumber: 86,
+                            lineNumber: 101,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -188,7 +201,7 @@ function OfferRide() {
                             className: "w-full p-3 rounded-full bg-white text-gray-900 border border-gray-300 focus:outline-none"
                         }, void 0, false, {
                             fileName: "[project]/src/app/offer-ride/page.tsx",
-                            lineNumber: 101,
+                            lineNumber: 116,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -202,7 +215,7 @@ function OfferRide() {
                                     className: "w-full p-3 rounded-full bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/offer-ride/page.tsx",
-                                    lineNumber: 109,
+                                    lineNumber: 124,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$input$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Input"], {
@@ -213,13 +226,13 @@ function OfferRide() {
                                     className: "w-full p-3 rounded-full bg-white text-gray-900 placeholder-gray-500 border border-gray-300 focus:outline-none"
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/offer-ride/page.tsx",
-                                    lineNumber: 116,
+                                    lineNumber: 131,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/offer-ride/page.tsx",
-                            lineNumber: 108,
+                            lineNumber: 123,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
@@ -230,7 +243,7 @@ function OfferRide() {
                             rows: 3
                         }, void 0, false, {
                             fileName: "[project]/src/app/offer-ride/page.tsx",
-                            lineNumber: 125,
+                            lineNumber: 140,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
@@ -239,24 +252,24 @@ function OfferRide() {
                             children: "Post Ride"
                         }, void 0, false, {
                             fileName: "[project]/src/app/offer-ride/page.tsx",
-                            lineNumber: 133,
+                            lineNumber: 148,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/offer-ride/page.tsx",
-                    lineNumber: 78,
+                    lineNumber: 93,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/offer-ride/page.tsx",
-            lineNumber: 73,
+            lineNumber: 88,
             columnNumber: 7
         }, this)
     }, void 0, false, {
         fileName: "[project]/src/app/offer-ride/page.tsx",
-        lineNumber: 72,
+        lineNumber: 87,
         columnNumber: 5
     }, this);
 }

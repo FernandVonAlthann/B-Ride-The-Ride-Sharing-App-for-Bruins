@@ -262,44 +262,42 @@ app.post("/users/login",async(req,res)=>{
 // Create a ride (Does not allow same user to create more than one ride)
 // POST: http://localhost:5001/rides/create
 // Provide JSON body with the following order: user_id , pickup_location , dropoff_location,cost
-app.post("/rides/create",async(req,res)=>{
+app.post("/rides/create", async (req, res) => {
+  try {
+    const { user_id, title, pickup_location, dropoff_location, time, max_passengers, price, description } = req.body;
 
-  try{
-    const{user_id, pickup_location,dropoff_location,cost} = req.body;
-    if(!user_id||!pickup_location||!dropoff_location||cost===null)  //cost===undefined?
-    {
-      return res.status(400).json({ error: "Error: Missing required field(s)." }); 
+    if (!user_id || !title || !pickup_location || !dropoff_location || !time || !max_passengers || price === undefined) {
+      return res.status(400).json({ error: "Error: Missing required fields." });
     }
 
-    const existingRide = await pool.query("SELECT * FROM rides WHERE user_id = $1 AND status = 'pending';", [user_id]); //status = 'in progress'
-    if(existingRide.rows.length>0)
-      {
-       return res.status(404).send("Cannot creata a new ride with an ongoing ride.");
-      }
-    const newRide = await pool.query("INSERT INTO rides (user_id, pickup_location, dropoff_location, cost) VALUES ($1,$2,$3,$4) RETURNING *;", [user_id, pickup_location, dropoff_location, cost]);
+    const newRide = await pool.query(
+      "INSERT INTO rides (user_id, title, pickup_location, dropoff_location, time, max_passengers, price, description) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;",
+      [user_id, title, pickup_location, dropoff_location, time, max_passengers, price, description]
+    );
+
     res.json(newRide.rows[0]);
-  } catch(err)
-  {
-      console.error(err.message);
-      res.status(500).send("Server Error: adding a ride");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error: adding a ride");
   }
 });
 
 
+
 // Retreive all ride
 // GET: http://localhost:5001/rides
-app.get("/rides",async(req,res)=>{
-  try
-  {
-    const allRides = await pool.query("SELECT * FROM rides" );
+app.get("/rides", async (req, res) => {
+  try {
+    const allRides = await pool.query(
+      "SELECT rides.*, users.name AS user_name, users.profile_picture AS user_profile_pic FROM rides JOIN users ON rides.user_id = users.id ORDER BY rides.time DESC;"
+    );
     res.json(allRides.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error: getting all rides");
   }
-  catch(err)
-  {
-      console.error(err.message);
-      res.status(500).send("Server Error: getting all rides");
-  }
-})
+});
+
 
 
 // Retreive an ongoing ride with user ID

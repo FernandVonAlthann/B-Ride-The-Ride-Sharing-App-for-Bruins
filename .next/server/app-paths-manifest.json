@@ -9,5 +9,12 @@
   "/map/page": "app/map/page.js",
   "/api/locations/route": "app/api/locations/route.js",
   "/_not-found/page": "app/_not-found/page.js",
-  "/offer-ride/page": "app/offer-ride/page.js"
+  "/offer-ride/page": "app/offer-ride/page.js",
+  "/ride-matching/page": "app/ride-matching/page.js",
+  "/group-chat/page": "app/group-chat/page.js",
+  "/ride-cost/page": "app/ride-cost/page.js",
+  "/payment/page": "app/payment/page.js",
+  "/messages/page": "app/messages/page.js",
+  "/forum/page": "app/forum/page.js",
+  "/emergency-contact/page": "app/emergency-contact/page.js"
 }
