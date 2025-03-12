@@ -40,12 +40,37 @@ export default function Dashboard() {
     setRides(updatedRides); // Update state
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
+  const handleLogout = async() => {  // Delete User
+    try
+    {
+      const res = await fetch(`http://localhost:5001/users/delete/${user.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+       });
+
+       const deletedUser = await res.json();
+
+       alert("User deleted successfully!");
+      router.push("/");
+      
+       if(!res.ok)
+       {
+        throw new Error(deletedUser.error);
+       }  
+    }
+    catch(err)
+    {
+      alert(err.message);
+    }
     router.push("/");
   };
-
-  const handleSafeLogout = () => {
+  
+  const handleSafeLogout = () => {  // Basic Logout
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    alert("Logged out successfully!");
     router.push("/");
   };
 
@@ -95,6 +120,48 @@ export default function Dashboard() {
             <Button className="w-full bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/messages")}>
               Direct Messages
             </Button>
+	     <Button className="w-full bg-green-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("map")}>
+          View Map
+        </Button>
+	<Button className="w-full bg-green-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("AI-Chat-Assistant")}>
+          Chat With An Assistant
+        </Button>
+	<Button className="w-full bg-yellow-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/profile")}>
+  	  View My Profile
+        </Button>
+	<Button className="w-full bg-blue-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/ride-history")}>
+  	  View My Ride History
+        </Button>
+	<Button className="w-full bg-indigo-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/saved-locations")}>
+  	  View My Saved Locations
+        </Button>
+	<Button className="w-full bg-green-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/Ratings-Reviews")}>
+  	  Ratings and Reviews
+        </Button>
+	<Button className="w-full bg-yellow-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/ride-matching")}>
+  	  Live Matchmaking
+        </Button>
+	<Button className="w-full bg-blue-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/group-chat")}>
+  	  Group Chat
+        </Button>
+	<Button className="w-full bg-purple-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/ride-cost")}>
+  	  Estimate Cost
+        </Button>
+	<Button className="w-full bg-green-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/payment")}>
+  	  Payment
+        </Button>
+	<Button className="w-full bg-orange-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/dark-mode")}>
+  	Enable Dark Mode
+        </Button>
+        <Button className="w-full bg-yellow-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/referral")}>
+  	  Refer A Friend
+      </Button>
+      <Button className="w-full bg-blue-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/referral-redeem")}>
+  	  Input Referral Code
+      </Button>
+      <Button className="w-full bg-purple-500 hover:bg-green-600 text-white rounded-lg text-lg py-3" onClick={() => router.push("/language")}>
+  	  Language
+      </Button>
           </CardContent>
         </Card>
 
