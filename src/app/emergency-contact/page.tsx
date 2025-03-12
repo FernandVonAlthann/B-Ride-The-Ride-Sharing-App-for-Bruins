@@ -11,38 +11,19 @@ export default function EmergencyContactPage() {
   const [contact, setContact] = useState("");
 
   useEffect(() => {
-    // Fetch emergency contact from the API
-    fetchEmergencyContact();
+    // Load emergency contact from localStorage
+    const savedContact = localStorage.getItem("emergencyContact");
+    if (savedContact) setContact(savedContact);
   }, []);
 
-  const fetchEmergencyContact = async () => {
-    try {
-      const res = await fetch("/api/emergency-contact", { cache: "no-store" });
-      if (!res.ok) throw new Error("Failed to fetch emergency contact");
-      const data = await res.json();
-      setContact(data.emergencyContact || "");
-    } catch (error) {
-      console.error("Error fetching emergency contact:", error);
-    }
-  };
-
-  const handleSave = async () => {
+  const handleSave = () => {
     if (!contact.trim()) {
       alert("Please enter a valid phone number.");
       return;
     }
-    try {
-      const res = await fetch("/api/emergency-contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ emergencyContact: contact }),
-      });
-      if (!res.ok) throw new Error("Failed to save emergency contact");
-      alert("Emergency contact saved!");
-    } catch (error) {
-      console.error("Error saving emergency contact:", error);
-      alert("Error saving emergency contact");
-    }
+
+    localStorage.setItem("emergencyContact", contact);
+    alert("Emergency contact saved!");
   };
 
   return (
