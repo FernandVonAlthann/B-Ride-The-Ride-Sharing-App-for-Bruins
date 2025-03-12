@@ -239,10 +239,10 @@ export default function Dashboard() {
             Emergency Contact
           </Button>
 	   <Button
-            className="w-full bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] hover:to-[#FCA5A5] text-white shadow-md rounded-full py-2 text-sm font-medium transition-all flex items-center justify-center gap-2"
+            className="w-full bg-gradient-to-r from-[#059669] to-[#10B981] hover:to-[#FCA5A5] text-white shadow-md rounded-full py-2 text-sm font-medium transition-all flex items-center justify-center gap-2"
             onClick={getLocation}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="blue" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
               <line x1="12" y1="8" x2="12" y2="12"></line>
               <line x1="12" y1="16" x2="12.01" y2="16"></line>
