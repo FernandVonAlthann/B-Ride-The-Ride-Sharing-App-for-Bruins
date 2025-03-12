@@ -27,6 +27,15 @@ export default function Dashboard() {
   const [location, setLocation] = useState<{ lat: number; lon: number } | null>(null);
   
   useEffect(() => {
+    fetch("/api/profile")
+      .then((res) => res.json())
+      .then((data) => {
+        setUser((prevUser) => ({
+          ...prevUser,
+          profilePic: data.profilePic, // Only update profilePic
+        }));
+      });
+
     loadRides();
     const fetchUserData = () => {
       let userEmail = localStorage.getItem("userEmail") ?? "";
@@ -396,4 +405,3 @@ export default function Dashboard() {
     </div>
   );
 }
-
