@@ -14,18 +14,20 @@ interface Ride {
 export default function RideHistory() {
   const router = useRouter();
   const [rideHistory, setRideHistory] = useState<Ride[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchRideHistory = async () => {
       try {
-        const res = await fetch('/api/ride-history');
-        if (!res.ok) {
-          throw new Error("Failed to fetch ride history");
-        }
+        const res = await fetch("/api/ride-history");
+        if (!res.ok) throw new Error("Failed to fetch ride history");
+
         const data = await res.json();
         setRideHistory(data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -33,33 +35,44 @@ export default function RideHistory() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-green-400 to-blue-500 text-white p-6">
-      <h1 className="text-3xl font-bold mb-6">Ride History</h1>
-      <Card className="w-full max-w-lg bg-gray-100 text-gray-800 shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-center text-2xl">Past Rides</CardTitle>
+    <div className="min-h-screen bg-gradient-to-br from-[#4D9FFF] to-[#020B3B] flex flex-col items-center justify-center p-6">
+      <h1 className="text-4xl font-bold text-white mb-6">Ride History 🚗</h1>
+
+      <Card className="w-full max-w-2xl bg-white/90 shadow-xl rounded-2xl">
+        <CardHeader className="bg-gradient-to-r from-[#4D9FFF] to-[#2563EB] text-white rounded-t-2xl p-6">
+          <CardTitle className="text-center text-2xl font-bold">
+            Past Rides
+          </CardTitle>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {rideHistory.length > 0 ? (
-              rideHistory.map((ride, index) => (
-                <div key={index} className="border-b pb-2">
-                  <p className="text-lg font-semibold">
-                    {ride.from} → {ride.to}
-                  </p>
-                  <p className="text-sm text-gray-500">
-                    {new Date(ride.time).toLocaleString()}
-                  </p>
-                </div>
-              ))
-            ) : (
-              <p className="text-center text-gray-500">No past rides</p>
-            )}
-          </div>
+        <CardContent className="p-6 space-y-6">
+          {isLoading ? (
+            <div className="text-center py-6 text-gray-600">
+              Loading ride history...
+            </div>
+          ) : rideHistory.length > 0 ? (
+            rideHistory.map((ride, index) => (
+              <div
+                key={index}
+                className="bg-gray-100 p-4 rounded-xl shadow-sm border border-gray-200"
+              >
+                <p className="text-lg font-semibold text-gray-900 flex justify-between">
+                  <span>{ride.from}</span>
+                  <span className="text-gray-500">→</span>
+                  <span>{ride.to}</span>
+                </p>
+                <p className="text-sm text-gray-600 mt-1">
+                  🕒 {new Date(ride.time).toLocaleString()}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-600">No past rides found</p>
+          )}
         </CardContent>
       </Card>
+
       <Button
-        className="mt-6 bg-gray-500 hover:bg-gray-600 text-white"
+        className="mt-6 bg-[#E6B400] hover:bg-[#D4A017] text-black font-medium py-3 rounded-full shadow-md"
         onClick={() => router.push("/dashboard")}
       >
         Back to Dashboard
@@ -67,3 +80,4 @@ export default function RideHistory() {
     </div>
   );
 }
+
