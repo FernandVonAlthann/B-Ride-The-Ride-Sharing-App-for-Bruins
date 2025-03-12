@@ -122,7 +122,7 @@ export default function Dashboard() {
         { name: "Find a Ride", path: "/find-ride", gradient: "bg-gradient-to-r from-[#FFD700] to-[#FFA500]", textColor: "text-black", icon: "🚗" },
         { name: "Offer a Ride", path: "/offer-ride", gradient: "bg-gradient-to-r from-[#1E40AF] to-[#3B82F6]", textColor: "text-white", icon: "🚘" },
   { name: "Matching Rides", path: "/ride-matching", gradient: "bg-gradient-to-r from-[#1E40AF] to-[#3B82F6]", textColor: "text-white", icon: "🚘" },
-        { name: "Estimate Cost", path: "/ride-cost", gradient: "bg-gradient-to-r from-[#1E40AF] to-[#3B82F6]", textColor: "text-white", icon: "💳" },
+        { name: "Estimate Cost", path: "/ride-cost", gradient: "bg-gradient-to-r from-[#1E40AF] to-[#3B82F6]", textColor: "text-white", icon: "💸" },
         { name: "View Map", path: "/map", gradient: "bg-gradient-to-r from-[#059669] to-[#10B981]", textColor: "text-white", icon: "🗺️" },
         { name: "Saved Locations", path: "/saved-locations", gradient: "bg-gradient-to-r from-[#1E40AF] to-[#3B82F6]", textColor: "text-white", icon: "📍" },
       ]
@@ -301,7 +301,7 @@ export default function Dashboard() {
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
-                Your Most Recent Rides
+                Your Most Recent Ride
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
