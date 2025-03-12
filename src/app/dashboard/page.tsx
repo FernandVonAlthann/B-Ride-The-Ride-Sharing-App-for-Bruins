@@ -83,18 +83,29 @@ export default function Dashboard() {
   };
 
   const fetchRecentRide = async (userId: string) => {
-    try {
-      const res = await fetch(
-        `http://localhost:5001/rides/user/${userId}/recent`
-      );
-      if (!res.ok) throw new Error("Failed to fetch recent ride");
+  try {
+    const res = await fetch(
+      `http://localhost:5001/rides/user/${userId}/recent`
+    );
 
-      const rideData = await res.json();
-      if (rideData) setRecentRide(rideData);
-    } catch (error) {
-      console.error("Error fetching recent ride:", error);
+    if (!res.ok) {
+      console.warn("No recent ride found or request failed.");
+      setRecentRide(null); // Ensure state is cleared
+      return;
     }
-  };
+
+    const rideData = await res.json();
+    if (rideData) {
+      setRecentRide(rideData);
+    } else {
+      setRecentRide(null); // Handle case where API returns empty data
+    }
+  } catch (error) {
+    console.error("Error fetching recent ride:", error);
+    setRecentRide(null); // Ensure UI does not break
+  }
+};
+
 
   const handleLogout = () => {
     localStorage.removeItem("user");
