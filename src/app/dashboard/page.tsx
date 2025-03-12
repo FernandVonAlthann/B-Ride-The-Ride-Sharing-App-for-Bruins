@@ -143,7 +143,7 @@ export default function Dashboard() {
         { name: "Payment", path: "/payment", gradient: "bg-gradient-to-r from-[#1E40AF] to-[#3B82F6]", textColor: "text-white", icon: "💳" },
         { name: "Input Referral Code", path: "/referral-redeem", gradient: "bg-gradient-to-r from-[#FFD700] to-[#FFA500]", textColor: "text-black", icon: "🎁" },
 //        { name: "Language", path: "/language", gradient: "bg-gradient-to-r from-[#2563EB] to-[#60A5FA]", textColor: "text-white", icon: "🌐" },
-//	{ name: "Lighting Mode", path: "/dark-mode", gradient: "bg-gradient-to-r from-[#2563EB] to-[#60A5FA]", textColor: "text-white",},
+//	  { name: "Lighting Mode", path: "/dark-mode", gradient: "bg-gradient-to-r from-[#2563EB] to-[#60A5FA]", textColor: "text-white",},
       ]
     }
   ];
