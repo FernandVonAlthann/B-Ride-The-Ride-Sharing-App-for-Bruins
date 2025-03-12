@@ -9,9 +9,9 @@ import Image from "next/image";
 export default function Profile({ userId }: { userId: string }) {
   const router = useRouter();
   const [profile, setProfile] = useState({
-    name: "John Doe",
-    email: "johndoe@example.com",
-    bio: "I love road trips and carpooling!",
+    name: "Please Update Nickname",
+    email: "user@gmail.com",
+    bio: "Please Update Bio",
     profilePic: "/default-avatar.png",
     preferences: {
       language: "English",
@@ -92,7 +92,7 @@ export default function Profile({ userId }: { userId: string }) {
         </div>
 
         {/* Name Input */}
-        <label className="block font-semibold text-left">Name</label>
+        <label className="block font-semibold text-left">Nickname</label>
         <input
           type="text"
           value={profile.name}
