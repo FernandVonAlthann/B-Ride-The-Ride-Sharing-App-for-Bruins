@@ -362,34 +362,6 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
- {/* Upcoming Rides Panel */}
-        <Card className="bg-white text-gray-800 shadow-lg rounded-lg">
-          <CardHeader>
-            <CardTitle className="text-center text-2xl">Upcoming Rides</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              {rides.length > 0 ? (
-                rides.map((ride, index) => (
-                  <div key={index} className="border-b pb-4 flex justify-between items-center">
-                    <div>
-                      <p className="text-xl font-semibold">{ride.from} → {ride.to}</p>
-                      <p className="text-base text-gray-500">{new Date(ride.time).toLocaleString()}</p>
-                    </div>
-                    <Button className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 text-base rounded-lg" onClick={() => deleteRide(index)}>
-                      Delete
-                    </Button>
-                  </div>
-                ))
-              ) : (
-                <p className="text-center text-gray-500 text-xl">No upcoming rides</p>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-
-
-
           {/* Dashboard Actions */}
           {dashboardActions.map((section, index) => (
             <div key={index} className="mb-8">
