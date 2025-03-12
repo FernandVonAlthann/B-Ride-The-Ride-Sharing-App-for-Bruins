@@ -174,49 +174,49 @@ export default function Dashboard() {
           </Button>
           <Button
             className="bg-[#2563EB] text-white font-semibold shadow-md rounded-full py-3"
-            onClick={() => router.push("/offer-ride")}
+            onClick={() => router.push("AI-Chat-Assistant")}
           >
             Chat With An Assistant
           </Button>
           <Button
             className="bg-[#2563EB] text-white font-semibold shadow-md rounded-full py-3"
-            onClick={() => router.push("/offer-ride")}
+            onClick={() => router.push("/saved-locations")}
           >
             View My Saved Locations
           </Button>
           <Button
             className="bg-[#E6B400] text-black font-semibold shadow-md rounded-full py-3"
-            onClick={() => router.push("/find-ride")}
+            onClick={() => router.push("/Ratings-Reviews")}
           >
             Ratings and Reviews
           </Button>
           <Button
             className="bg-[#2563EB] text-white font-semibold shadow-md rounded-full py-3"
-            onClick={() => router.push("/offer-ride")}
+            onClick={() => router.push("/payment")}
           >
-            Enable Dark Mode
+            Payment
           </Button>
           <Button
             className="bg-[#2563EB] text-white font-semibold shadow-md rounded-full py-3"
-            onClick={() => router.push("/offer-ride")}
+            onClick={() => router.push("/referral")}
           >
             Refer A Friend
           </Button>
           <Button
             className="bg-[#E6B400]text-black font-semibold shadow-md rounded-full py-3"
-            onClick={() => router.push("/find-ride")}
+            onClick={() => router.push("/referral-redeem")}
           >
             Input Referral Code
           </Button>
           <Button
             className="bg-[#2563EB] text-white font-semibold shadow-md rounded-full py-3"
-            onClick={() => router.push("/find-ride")}
+            onClick={() => router.push("/language")}
           >
             Language
           </Button>
           <Button
             className=" bg-green-500 text-white font-semibold shadow-md rounded-full py-3"
-            onClick={() => router.push("/find-ride")}
+            onClick={() => router.push("map")}
           >
             View Map
           </Button>
