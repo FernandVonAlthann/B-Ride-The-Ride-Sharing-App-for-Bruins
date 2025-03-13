@@ -124,7 +124,7 @@ export default function GroupChat() {
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-                  className="flex-1 border-blue-200 focus:ring-blue-500 rounded-full"
+                  className="p-3 px-6 flex-1 border-blue-200 focus:ring-blue-500 rounded-full"
                 />
                 <Button
                   className="bg-gradient-to-r from-[#0F172A] to-[#1E40AF] hover:from-[#172554] hover:to-[#2563EB] text-white shadow-md rounded-full"
