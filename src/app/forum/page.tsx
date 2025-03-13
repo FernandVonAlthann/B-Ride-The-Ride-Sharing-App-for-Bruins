@@ -114,8 +114,8 @@ export default function Forum() {
         </div>
 
         <Card className="bg-white/95 backdrop-blur-sm shadow-xl rounded-xl overflow-hidden mb-6">
-          <CardHeader className="bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] text-white">
-            <CardTitle className="text-center text-2xl font-bold">Create New Thread</CardTitle>
+          <CardHeader className="bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] rounded-[15px] text-white">
+            <CardTitle className="p-3 text-center text-2xl font-bold">Create New Thread</CardTitle>
           </CardHeader>
           <CardContent className="p-6">
             <Input
