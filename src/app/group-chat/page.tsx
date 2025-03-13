@@ -113,7 +113,7 @@ export default function GroupChat() {
                   placeholder="Your Name"
                   value={sender}
                   onChange={(e) => setSender(e.target.value)}
-                  className="flex-1 border-blue-200 focus:ring-blue-500 rounded-full"
+                  className="p-2 px-4 flex-1 border-blue-200 focus:ring-blue-500 rounded-full"
                 />
               </div>
               
