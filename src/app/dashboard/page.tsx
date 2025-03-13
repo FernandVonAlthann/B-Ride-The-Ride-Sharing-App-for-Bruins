@@ -110,6 +110,7 @@ export default function Dashboard() {
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("userEmail");
+    localStorage.removeItem("token");
     window.dispatchEvent(new Event("storage"));
     router.push("/login");
   };
