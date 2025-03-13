@@ -127,7 +127,7 @@ export default function GroupChat() {
                   className="p-3 px-6 flex-1 border-blue-200 focus:ring-blue-500 rounded-full"
                 />
                 <Button
-                  className="bg-gradient-to-r from-[#0F172A] to-[#1E40AF] hover:from-[#172554] hover:to-[#2563EB] text-white shadow-md rounded-full"
+                  className="p-6 bg-gradient-to-r from-[#0F172A] to-[#1E40AF] hover:from-[#172554] hover:to-[#2563EB] text-white shadow-md rounded-[20px]"
                   onClick={sendMessage}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
