@@ -38,7 +38,7 @@ export default function RideHistory() {
     <div className="min-h-screen bg-gradient-to-br from-[#4D9FFF] to-[#020B3B] flex flex-col items-center justify-center p-6">
       <h1 className="text-4xl font-bold text-white mb-6">Ride History 🚗</h1>
 
-      <Card className="w-full max-w-2xl bg-white/90 shadow-xl rounded-2xl">
+      <Card className="w-full max-w-2xl bg-white/90 shadow-xl rounded-3xl">
         <CardHeader className="bg-gradient-to-r from-[#4D9FFF] to-[#2563EB] text-white rounded-t-2xl p-6">
           <CardTitle className="text-center text-2xl font-bold">
             Past Rides
@@ -66,13 +66,13 @@ export default function RideHistory() {
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-600">No past rides found</p>
+            <p className="text-center text-gray-600">No past rides found. Go to dashboard to find a ride!</p>
           )}
         </CardContent>
       </Card>
 
       <Button
-        className="mt-6 bg-[#E6B400] hover:bg-[#D4A017] text-black font-medium py-3 rounded-full shadow-md"
+        className="p-6 mt-6 bg-[#E6B400] hover:bg-[#D4A017] text-black font-medium py-3 rounded-full shadow-md"
         onClick={() => router.push("/dashboard")}
       >
         Back to Dashboard
