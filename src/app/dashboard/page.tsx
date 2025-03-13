@@ -132,7 +132,7 @@ export default function Dashboard() {
       category: "Community",
       items: [
         { name: "Direct Messages", path: "/messages", gradient: "bg-gradient-to-r from-[#2563EB] to-[#60A5FA]", textColor: "text-white", icon: "💬" },
-	{ name: "Forum", path: "/forum", gradient: "bg-gradient-to-r from-[#2563EB] to-[#60A5FA]", textColor: "text-white", icon: "💬" },
+	{ name: "Forum", path: "/forum", gradient: "bg-gradient-to-r from-[#2563EB] to-[#60A5FA]", textColor: "text-white", icon: "📢" },
         { name: "Ratings & Reviews", path: "/Ratings-Reviews", gradient: "bg-gradient-to-r from-[#FFD700] to-[#FFA500]", textColor: "text-black", icon: "⭐" },
         { name: "Chat Assistant", path: "/AI-Chat-Assistant", gradient: "bg-gradient-to-r from-[#1E40AF] to-[#3B82F6]", textColor: "text-white", icon: "🤖" },
         { name: "Refer a Friend", path: "/referral", gradient: "bg-gradient-to-r from-[#2563EB] to-[#60A5FA]", textColor: "text-white", icon: "👥" },
