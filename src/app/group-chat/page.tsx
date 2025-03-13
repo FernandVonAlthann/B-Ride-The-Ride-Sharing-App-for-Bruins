@@ -73,7 +73,7 @@ export default function GroupChat() {
         </div>
         
         <Card className="bg-white/95 backdrop-blur-sm shadow-xl rounded-xl overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] text-white">
+          <CardHeader className="p-3 rounded-[15px] bg-gradient-to-r from-[#1E40AF] to-[#3B82F6] text-white">
             <CardTitle className="text-center text-2xl font-bold">Group Chat</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col space-y-4 p-6">
